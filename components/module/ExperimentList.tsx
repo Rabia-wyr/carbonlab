@@ -12,6 +12,7 @@ interface ExperimentListProps {
   difficultyFilter?: Difficulty | "all"
   categoryFilter?: string | "all"
   title?: string
+  onlyAvailable?: boolean
 }
 
 export default function ExperimentList({
@@ -19,7 +20,8 @@ export default function ExperimentList({
   searchTerm = "",
   difficultyFilter = "all",
   categoryFilter = "all",
-  title = "实验列表"
+  title = "实验列表",
+  onlyAvailable = false
 }: ExperimentListProps) {
   // 处理实验点击
   const handleExperimentClick = (experiment: Experiment) => {
@@ -47,7 +49,11 @@ export default function ExperimentList({
     // 由于 category 不存在于 Experiment 类型中，我们只使用 all 过滤
     const matchesCategory = categoryFilter === "all"
 
-    return matchesSearch && matchesDifficulty && matchesCategory
+    // 根据 onlyAvailable 参数决定是否只显示已上线的实验
+    const matchesAvailability = onlyAvailable ? 
+      (experiment.status !== "开发中" && experiment.status !== "维护中") : true
+
+    return matchesSearch && matchesDifficulty && matchesCategory && matchesAvailability
   })
 
   return (
@@ -71,7 +77,7 @@ export default function ExperimentList({
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-xl font-semibold text-gray-800">{experiment.title}</h3>
                   <div className="flex items-center gap-2">
-                    {experiment.status && (
+                    {experiment.status && (experiment.status === "开发中" || experiment.status === "维护中") && (
                       <span className={`text-xs font-medium ${getStatusColor(experiment.status)} px-2 py-1 rounded`}>
                         {experiment.status}
                       </span>

@@ -35,16 +35,6 @@ export type Module = {
 export const experiments: Experiment[] = [
   // 碳监测模块实验
   {
-    id: "real-time-monitoring",
-    title: "实时监测系统",
-    description: "通过传感器网络实时监测碳排放数据",
-    difficulty: "中级",
-    status: "开发中",
-    icon: "sensor",
-    route: "/experiments/real-time-monitoring",
-    module: "carbon-monitor"
-  },
-  {
     id: "emission-source",
     title: "排放源识别",
     description: "使用机器学习识别和分类碳排放源",
@@ -70,7 +60,7 @@ export const experiments: Experiment[] = [
     title: "企业碳足迹分析",
     description: "企业生产经营活动的碳排放计算与分析",
     difficulty: "高级",
-    status: "开发中",
+    status: "已上线",
     icon: "building",
     route: "/experiments/enterprise-carbon-footprint",
     module: "carbon-calculate"
@@ -128,7 +118,7 @@ export const modules: Module[] = [
     icon: "chart-line",
     color: "emerald",
     gradient: "from-green-600 to-emerald-700",
-    experimentIds: ["real-time-monitoring", "emission-source"],
+    experimentIds: ["emission-source"],
   },
   {
     id: "carbon-calculate",

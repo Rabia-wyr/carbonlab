@@ -57,14 +57,9 @@ type ReductionTips = {
   [key: string]: ReductionTip[];
 }
 
-type CountryData = {
-  country: string;
+type IndustryData = {
+  industry: string;
   value: number;
-}
-
-type HistoricalData = {
-  month: string;
-  footprint: number;
 }
 
 type CategoryFootprint = {
@@ -72,95 +67,92 @@ type CategoryFootprint = {
   value: number;
 }
 
-// 碳足迹来源及其默认值和单位
+// 企业碳足迹来源及其默认值和单位
 const carbonSources: CarbonSources = {
-  transportation: {
-    car: { label: "私家车", defaultValue: 0, unit: "公里/周", factor: 0.12 },
-    bus: { label: "公交车", defaultValue: 0, unit: "公里/周", factor: 0.05 },
-    subway: { label: "地铁", defaultValue: 0, unit: "公里/周", factor: 0.03 },
-    plane: { label: "飞机", defaultValue: 0, unit: "小时/年", factor: 90 }
+  energy: {
+    electricity: { label: "电力消耗", defaultValue: 0, unit: "万度/月", factor: 400 },
+    fuel: { label: "燃料使用", defaultValue: 0, unit: "吨/月", factor: 3000 },
+    heating: { label: "供暖消耗", defaultValue: 0, unit: "万立方米/月", factor: 2000 }
   },
-  home: {
-    electricity: { label: "电力消耗", defaultValue: 0, unit: "度/月", factor: 0.4 },
-    gas: { label: "天然气", defaultValue: 0, unit: "立方米/月", factor: 2.0 },
-    water: { label: "自来水", defaultValue: 0, unit: "吨/月", factor: 0.3 }
+  production: {
+    rawMaterials: { label: "原材料加工", defaultValue: 0, unit: "吨/月", factor: 500 },
+    waste: { label: "废弃物处理", defaultValue: 0, unit: "吨/月", factor: 300 },
+    water: { label: "工业用水", defaultValue: 0, unit: "万吨/月", factor: 150 }
   },
-  food: {
-    meat: { label: "肉类消费", defaultValue: 0, unit: "千克/月", factor: 7.0 },
-    dairy: { label: "乳制品", defaultValue: 0, unit: "千克/月", factor: 3.0 },
-    vegetables: { label: "蔬菜水果", defaultValue: 0, unit: "千克/月", factor: 0.5 }
+  logistics: {
+    transportation: { label: "产品运输", defaultValue: 0, unit: "万公里/月", factor: 120 },
+    businessTravel: { label: "商务差旅", defaultValue: 0, unit: "万公里/月", factor: 100 },
+    warehousing: { label: "仓储能耗", defaultValue: 0, unit: "万平米/月", factor: 80 }
   },
-  consumption: {
-    clothes: { label: "服装消费", defaultValue: 0, unit: "件/年", factor: 10.0 },
-    electronics: { label: "电子产品", defaultValue: 0, unit: "件/年", factor: 50.0 },
-    others: { label: "其他消费品", defaultValue: 0, unit: "件/月", factor: 5.0 }
+  operations: {
+    officeEquipment: { label: "办公设备", defaultValue: 0, unit: "百台/年", factor: 5000 },
+    employeeCommute: { label: "员工通勤", defaultValue: 0, unit: "万公里/月", factor: 70 },
+    paperConsumption: { label: "纸张消耗", defaultValue: 0, unit: "吨/年", factor: 2000 }
   }
 }
 
 // 减排建议数据
 const reductionTips: ReductionTips = {
-  transportation: [
-    { tip: "选择步行、骑行或公共交通替代私家车出行", potential: "每周减少5-20kg碳排放" },
-    { tip: "与同事拼车通勤", potential: "每周减少2-10kg碳排放" },
-    { tip: "减少不必要的长途旅行，选择视频会议", potential: "每次减少300-1000kg碳排放" },
+  energy: [
+    { tip: "采用可再生能源，如太阳能、风能等", potential: "可减少30-60%能源碳排放" },
+    { tip: "优化能源使用效率，升级节能设备", potential: "可减少15-30%能源碳排放" },
+    { tip: "实施智能化能源管理系统，优化运行参数", potential: "可减少10-20%能源碳排放" },
   ],
-  home: [
-    { tip: "使用节能电器，不用时关闭电源", potential: "每月减少10-30kg碳排放" },
-    { tip: "安装太阳能热水器或光伏板", potential: "每月减少20-100kg碳排放" },
-    { tip: "冬季适当降低室温，夏季适当提高室温", potential: "每月减少15-45kg碳排放" },
+  production: [
+    { tip: "采用循环经济模式，提高资源利用效率", potential: "可减少20-40%生产碳排放" },
+    { tip: "选择低碳原材料和清洁生产工艺", potential: "可减少15-35%生产碳排放" },
+    { tip: "优化废弃物管理，实施资源回收再利用", potential: "可减少10-25%生产碳排放" },
   ],
-  food: [
-    { tip: "减少肉类消费，增加素食比例", potential: "每月减少30-70kg碳排放" },
-    { tip: "选择当地、季节性食材", potential: "每月减少5-15kg碳排放" },
-    { tip: "减少食物浪费", potential: "每月减少10-30kg碳排放" }
+  logistics: [
+    { tip: "优化物流路线，提高车辆装载率", potential: "可减少10-30%物流碳排放" },
+    { tip: "使用电动或混合动力车辆替代传统燃油车", potential: "可减少20-50%物流碳排放" },
+    { tip: "减少不必要的商务差旅，提倡视频会议", potential: "可减少5-15%差旅碳排放" }
   ],
-  consumption: [
-    { tip: "延长物品使用寿命，减少不必要购买", potential: "每年减少50-200kg碳排放" },
-    { tip: "选择环保材料制作的产品", potential: "每年减少20-100kg碳排放" },
-    { tip: "购买二手物品，参与循环经济", potential: "每年减少30-150kg碳排放" }
+  operations: [
+    { tip: "实施无纸化办公，减少纸张使用", potential: "可减少5-10%办公碳排放" },
+    { tip: "鼓励员工使用公共交通、拼车或远程办公", potential: "可减少10-20%通勤碳排放" },
+    { tip: "延长办公设备使用寿命，选择能效高的产品", potential: "可减少5-15%设备碳排放" }
   ]
 }
 
-// 国家人均碳排放数据（示例数据）
-const countryData: CountryData[] = [
-  { country: "中国", value: 7.38 },
-  { country: "美国", value: 15.52 },
-  { country: "印度", value: 1.91 },
-  { country: "俄罗斯", value: 11.44 },
-  { country: "日本", value: 8.99 },
-  { country: "德国", value: 9.44 },
-  { country: "英国", value: 5.55 },
-  { country: "法国", value: 5.13 },
-  { country: "平均", value: 4.79 }
+// 行业人均碳排放数据（示例数据）
+const industryData: IndustryData[] = [
+  { industry: "制造业", value: 8.5 },
+  { industry: "能源行业", value: 15.2 },
+  { industry: "交通物流", value: 6.8 },
+  { industry: "建筑业", value: 7.3 },
+  { industry: "服务业", value: 3.1 },
+  { industry: "IT行业", value: 2.8 },
+  { industry: "农业", value: 5.2 },
+  { industry: "平均水平", value: 6.4 }
 ]
 
 // 饼图色彩
 const COLORS = ['var(--primary-custom)', 'var(--secondary-custom)', 'var(--accent-custom)', 'var(--chart-5)'];
 
-export default function PersonalCarbonFootprintPage() {
+export default function EnterpriseCarbonFootprintPage() {
   // 状态管理
-  const [activeCategory, setActiveCategory] = useState<string>("transportation")
+  const [activeCategory, setActiveCategory] = useState<string>("energy")
   const [values, setValues] = useState<{ [key: string]: { [key: string]: number } }>({
-    transportation: {
-      car: 0,
-      bus: 0,
-      subway: 0,
-      plane: 0
-    },
-    home: {
+    energy: {
       electricity: 0,
-      gas: 0,
+      fuel: 0,
+      heating: 0
+    },
+    production: {
+      rawMaterials: 0,
+      waste: 0,
       water: 0
     },
-    food: {
-      meat: 0,
-      dairy: 0,
-      vegetables: 0
+    logistics: {
+      transportation: 0,
+      businessTravel: 0,
+      warehousing: 0
     },
-    consumption: {
-      clothes: 0,
-      electronics: 0,
-      others: 0
+    operations: {
+      officeEquipment: 0,
+      employeeCommute: 0,
+      paperConsumption: 0
     }
   })
   const [totalFootprint, setTotalFootprint] = useState<number>(0)
@@ -169,6 +161,7 @@ export default function PersonalCarbonFootprintPage() {
   const [factors, setFactors] = useState<CarbonSources>({...carbonSources})
   const [isCalculated, setIsCalculated] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState<string>("calculator")
+  const [employeeCount, setEmployeeCount] = useState<number>(100)
 
   // 处理输入变化
   const handleInputChange = (category: string, item: string, value: number) => {
@@ -179,6 +172,11 @@ export default function PersonalCarbonFootprintPage() {
         [item]: value
       }
     }))
+  }
+
+  // 处理员工数量变化
+  const handleEmployeeCountChange = (value: number) => {
+    setEmployeeCount(value)
   }
 
   // 处理因子变化（高级设置）
@@ -213,24 +211,16 @@ export default function PersonalCarbonFootprintPage() {
         let itemFootprint = 0
         
         // 根据不同类别的时间周期调整计算
-        if (category === "transportation") {
-          if (item === "plane") {
-            // 飞机是按年计算的
+        if (category === "operations") {
+          if (item === "officeEquipment" || item === "paperConsumption") {
+            // 办公设备和纸张使用是按年计算的
             itemFootprint = value * factor / 12
           } else {
-            // 其他交通方式是按周计算的
-            itemFootprint = value * factor * 4.3 // 约4.3周/月
-          }
-        } else if (category === "consumption") {
-          if (item === "clothes" || item === "electronics") {
-            // 衣物和电子产品是按年计算的
-            itemFootprint = value * factor / 12
-          } else {
-            // 其他消费品是按月计算的
+            // 员工通勤是按月计算的
             itemFootprint = value * factor
           }
         } else {
-          // 家居和食物都是按月计算的
+          // 其他类别都是按月计算的
           itemFootprint = value * factor
         }
         
@@ -263,31 +253,39 @@ export default function PersonalCarbonFootprintPage() {
     })
     
     setValues(initialValues)
+    setEmployeeCount(100)
     setIsCalculated(false)
   }
 
   // 获取类别的中文名称
   const getCategoryName = (category: string): string => {
     switch(category) {
-      case "transportation": return "交通出行"
-      case "home": return "家庭能源"
-      case "food": return "饮食消费"
-      case "consumption": return "物品消费"
+      case "energy": return "能源使用"
+      case "production": return "生产过程"
+      case "logistics": return "运输物流"
+      case "operations": return "办公运营"
       default: return category
     }
   }
 
-  // 获取碳足迹评价等级
-  const getFootprintLevel = () => {
-    if (totalFootprint <= 300) return { level: "低碳生活", color: "text-[var(--secondary-custom)]", description: "您的碳排放处于较低水平，感谢您对环保的贡献！" }
-    if (totalFootprint <= 600) return { level: "中等碳排", color: "text-[var(--accent-custom)]", description: "您的碳排放处于中等水平，仍有改进空间。" }
-    return { level: "高碳排放", color: "text-[var(--destructive)]", description: "您的碳排放处于较高水平，建议采取减排措施。" }
+  // 计算人均碳足迹（吨/年）
+  const getPerCapitaFootprint = (): number => {
+    return parseFloat(((totalFootprint / employeeCount) * 12 / 1000).toFixed(2))
   }
 
-  // 计算平均每人每月碳排放量（中国人均约为7.38吨/年 = 615公斤/月）
-  const getPercentOfAverage = (): number => {
-    const monthlyAverageChinese = 615
-    return Math.round((totalFootprint / monthlyAverageChinese) * 100)
+  // 获取碳足迹评价等级
+  const getFootprintLevel = () => {
+    const perCapita = getPerCapitaFootprint()
+    if (perCapita <= 3) return { level: "低碳企业", color: "text-[var(--secondary-custom)]", description: "贵公司的碳排放水平处于行业领先水平，继续保持！" }
+    if (perCapita <= 6) return { level: "中等碳排", color: "text-[var(--accent-custom)]", description: "贵公司的碳排放处于行业平均水平，仍有改进空间。" }
+    return { level: "高碳排放", color: "text-[var(--destructive)]", description: "贵公司的碳排放高于行业平均水平，建议采取减排措施。" }
+  }
+
+  // 计算行业平均水平的百分比
+  const getPercentOfIndustryAverage = (): number => {
+    const perCapita = getPerCapitaFootprint()
+    const industryAverage = 6.4 // 行业平均值
+    return Math.round((perCapita / industryAverage) * 100)
   }
 
   return (
@@ -304,13 +302,37 @@ export default function PersonalCarbonFootprintPage() {
             <TabsContent value="calculator" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>碳足迹计算器</CardTitle>
+                  <CardTitle>企业碳足迹计算器</CardTitle>
                   <CardDescription>
-                    输入您的日常消费和活动数据，计算您的月度碳足迹
+                    输入贵公司的生产经营数据，计算企业的月度碳足迹
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
+                    {/* 企业基本信息 */}
+                    <div className="space-y-4 pb-4 border-b border-gray-200">
+                      <h4 className="text-sm font-medium">企业基本信息</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <Label htmlFor="employeeCount" className="text-sm">
+                            员工数量
+                          </Label>
+                          <span className="text-xs text-gray-500">
+                            {`${employeeCount} 人`}
+                          </span>
+                        </div>
+                        <Slider
+                          id="employeeCount"
+                          min={10}
+                          max={5000}
+                          step={10}
+                          value={[employeeCount]}
+                          onValueChange={(value) => handleEmployeeCountChange(value[0])}
+                          className="w-full"
+                        />
+                      </div>
+                    </div>
+
                     {/* 分类标签 */}
                     <div className="flex space-x-1 bg-gray-50 rounded-lg p-1">
                       {Object.keys(carbonSources).map((category) => (
@@ -343,10 +365,10 @@ export default function PersonalCarbonFootprintPage() {
                             id={item}
                             min={0}
                             max={
-                              item === "plane" ? 50 :
-                              item === "clothes" || item === "electronics" ? 20 :
-                              item === "meat" || item === "dairy" || item === "vegetables" ? 30 :
-                              100
+                              activeCategory === "energy" ? 50 :
+                              activeCategory === "production" ? 100 :
+                              activeCategory === "logistics" ? 30 :
+                              20
                             }
                             step={1}
                             value={[values[activeCategory][item]]}
@@ -387,7 +409,7 @@ export default function PersonalCarbonFootprintPage() {
                               id={`factor-${item}`}
                               type="number"
                               min="0"
-                              step="0.1"
+                              step="10"
                               value={factors[activeCategory][item].factor}
                               onChange={(e) => handleFactorChange(
                                 activeCategory,
@@ -428,18 +450,18 @@ export default function PersonalCarbonFootprintPage() {
             <TabsContent value="tips" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>减排建议</CardTitle>
+                  <CardTitle>企业减排建议</CardTitle>
                   <CardDescription>
-                    根据您的生活习惯，以下是一些减少碳足迹的建议
+                    根据贵公司的生产经营特点，以下是一些减少碳足迹的建议
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Tabs defaultValue="transportation" className="w-full">
+                  <Tabs defaultValue="energy" className="w-full">
                     <TabsList className="grid grid-cols-4 mb-4">
-                      <TabsTrigger value="transportation">交通</TabsTrigger>
-                      <TabsTrigger value="home">家居</TabsTrigger>
-                      <TabsTrigger value="food">饮食</TabsTrigger>
-                      <TabsTrigger value="consumption">消费</TabsTrigger>
+                      <TabsTrigger value="energy">能源</TabsTrigger>
+                      <TabsTrigger value="production">生产</TabsTrigger>
+                      <TabsTrigger value="logistics">物流</TabsTrigger>
+                      <TabsTrigger value="operations">运营</TabsTrigger>
                     </TabsList>
                     
                     {Object.keys(reductionTips).map((category) => (
@@ -473,9 +495,9 @@ export default function PersonalCarbonFootprintPage() {
               {/* 结果卡片 */}
               <Card>
                 <CardHeader>
-                  <CardTitle>您的碳足迹分析</CardTitle>
+                  <CardTitle>企业碳足迹分析</CardTitle>
                   <CardDescription>
-                    基于您提供的信息，以下是您的月度碳足迹计算结果
+                    基于贵公司提供的信息，以下是月度碳足迹计算结果
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -486,19 +508,20 @@ export default function PersonalCarbonFootprintPage() {
                     
                     <div className="mt-4">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm">相比中国平均水平</span>
-                        <span className="text-sm font-medium">{getPercentOfAverage()}%</span>
+                        <span className="text-sm">每位员工年均碳排放</span>
+                        <span className="text-sm font-medium">{getPerCapitaFootprint()} 吨CO₂e/年</span>
                       </div>
                       <Progress 
-                        value={getPercentOfAverage()} 
+                        value={getPercentOfIndustryAverage()} 
                         className="h-2 bg-gray-200 [&>div]:bg-[var(--primary-custom)]" 
                       />
+                      <div className="text-xs text-gray-500 mt-1">相当于行业平均水平的 {getPercentOfIndustryAverage()}%</div>
                     </div>
                     
                     <div className="mt-4">
                       <div className={`text-lg font-semibold ${
-                        totalFootprint <= 300 ? "text-[var(--secondary-custom)]" : 
-                        totalFootprint <= 600 ? "text-[var(--accent-custom)]" : 
+                        getPerCapitaFootprint() <= 3 ? "text-[var(--secondary-custom)]" : 
+                        getPerCapitaFootprint() <= 6 ? "text-[var(--accent-custom)]" : 
                         "text-[var(--destructive)]"
                       }`}>
                         {getFootprintLevel().level}
@@ -552,32 +575,32 @@ export default function PersonalCarbonFootprintPage() {
                 </CardContent>
               </Card>
 
-              {/* 对比数据 */}
+              {/* 行业对比数据 */}
               <Card>
                 <CardHeader>
-                  <CardTitle>碳足迹对比</CardTitle>
+                  <CardTitle>行业碳足迹对比</CardTitle>
                   <CardDescription>
-                    与其他国家人均碳排放量的对比
+                    与其他行业的人均碳排放量对比
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart
                       data={[
-                        ...countryData,
-                        { country: "您的足迹", value: totalFootprint / 1000 * 12 } // 转换为年吨数以便对比
+                        ...industryData,
+                        { industry: "贵公司", value: getPerCapitaFootprint() }
                       ]}
                       margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f5" />
-                      <XAxis dataKey="country" />
-                      <YAxis label={{ value: '吨CO₂e/年', angle: -90, position: 'insideLeft' }} />
-                      <Tooltip formatter={(value) => [`${value} 吨CO₂e/年`, ""]} />
+                      <XAxis dataKey="industry" />
+                      <YAxis label={{ value: '吨CO₂e/年/人', angle: -90, position: 'insideLeft' }} />
+                      <Tooltip formatter={(value) => [`${value} 吨CO₂e/年/人`, ""]} />
                       <Bar dataKey="value" fill="var(--primary-custom)">
-                        {[...countryData, { country: "您的足迹", value: 0 }].map((entry, index) => (
+                        {[...industryData, { industry: "贵公司", value: 0 }].map((entry, index) => (
                           <Cell 
                             key={`cell-${index}`} 
-                            fill={entry.country === "您的足迹" ? "var(--accent-custom)" : "var(--primary-custom)"} 
+                            fill={entry.industry === "贵公司" ? "var(--accent-custom)" : "var(--primary-custom)"} 
                           />
                         ))}
                       </Bar>
@@ -589,51 +612,51 @@ export default function PersonalCarbonFootprintPage() {
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle>个人碳足迹计算器</CardTitle>
+                <CardTitle>企业碳足迹计算器</CardTitle>
                 <CardDescription>
-                  了解并量化您日常生活中的碳排放
+                  了解并量化贵公司在生产经营中的碳排放
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="p-8 text-center bg-[var(--light)] border border-gray-100 rounded-lg">
                   <div className="text-5xl font-light text-gray-400 mb-4">?</div>
-                  <h3 className="text-xl font-medium mb-2">计算您的碳足迹</h3>
+                  <h3 className="text-xl font-medium mb-2">计算企业碳足迹</h3>
                   <p className="text-gray-500 max-w-md mx-auto">
-                    在左侧表单中输入您的日常生活数据，点击"计算碳足迹"按钮即可查看您的个人碳排放情况。
+                    在左侧表单中输入贵公司的生产经营数据，点击"计算碳足迹"按钮即可查看企业碳排放情况。
                   </p>
                 </div>
                 
                 <div className="border-t pt-6">
-                  <h3 className="text-xl font-medium mb-4">什么是碳足迹？</h3>
+                  <h3 className="text-xl font-medium mb-4">什么是企业碳足迹？</h3>
                   <p className="text-gray-600 mb-4">
-                    碳足迹是指个人、组织或产品在生产、使用和废弃过程中直接或间接产生的温室气体排放总量，通常以二氧化碳当量（CO₂e）计量。
+                    企业碳足迹是指企业在生产经营过程中直接或间接产生的温室气体排放总量，通常以二氧化碳当量（CO₂e）计量。
                   </p>
                   <p className="text-gray-600 mb-4">
-                    个人碳足迹主要来源于日常交通出行、家庭能源使用、饮食习惯以及消费行为。通过了解自己的碳足迹，可以有针对性地采取减排措施，为应对气候变化贡献力量。
+                    企业碳足迹主要来源于能源使用、生产过程、运输物流和办公运营等方面。通过量化和分析企业碳足迹，可以识别主要排放源，制定有针对性的减排策略。
                   </p>
                   <p className="text-gray-600">
-                    本计算器根据您的输入数据估算碳排放量，结果仅供参考。实际碳排放会受到多种因素影响，包括地理位置、气候条件、能源结构等。
+                    随着全球气候变化问题日益严峻，低碳经济成为大势所趋。减少碳排放不仅有利于环境保护，也能提升企业竞争力和社会形象。
                   </p>
                 </div>
                 
                 <div className="border-t pt-6">
-                  <h3 className="text-xl font-medium mb-4">如何使用本计算器</h3>
+                  <h3 className="text-xl font-medium mb-4">碳足迹管理的好处</h3>
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-start">
                       <span className="bg-[var(--primary-custom)]/10 text-[var(--primary-custom)] rounded-full w-5 h-5 flex items-center justify-center mr-2 shrink-0 mt-0.5">1</span>
-                      <span>在左侧表单的各个标签页中输入您的日常生活数据</span>
+                      <span>降低运营成本，提高能源和资源利用效率</span>
                     </li>
                     <li className="flex items-start">
                       <span className="bg-[var(--primary-custom)]/10 text-[var(--primary-custom)] rounded-full w-5 h-5 flex items-center justify-center mr-2 shrink-0 mt-0.5">2</span>
-                      <span>点击"计算碳足迹"按钮获取结果</span>
+                      <span>满足监管要求，降低政策和市场风险</span>
                     </li>
                     <li className="flex items-start">
                       <span className="bg-[var(--primary-custom)]/10 text-[var(--primary-custom)] rounded-full w-5 h-5 flex items-center justify-center mr-2 shrink-0 mt-0.5">3</span>
-                      <span>查看分析结果和减排建议</span>
+                      <span>提升品牌形象，满足消费者对环保的期望</span>
                     </li>
                     <li className="flex items-start">
                       <span className="bg-[var(--primary-custom)]/10 text-[var(--primary-custom)] rounded-full w-5 h-5 flex items-center justify-center mr-2 shrink-0 mt-0.5">4</span>
-                      <span>根据建议调整生活习惯，定期重新计算以跟踪进展</span>
+                      <span>吸引投资者，提高企业在资本市场的估值</span>
                     </li>
                   </ul>
                 </div>
@@ -644,4 +667,4 @@ export default function PersonalCarbonFootprintPage() {
       </div>
     </div>
   )
-} 
+}

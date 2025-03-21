@@ -54,7 +54,7 @@ export default function Home() {
           <p className="mb-8 text-gray-600">探索我们平台上的精选模拟实验，每个实验都提供了交互控制，让您能够调整参数，观察变化。更多实验可在各领域模块页面中找到。</p>
           
           {/* 使用 ExperimentList 组件展示所有实验，不显示额外的标题 */}
-          <ExperimentList experiments={experiments} title="" />
+          <ExperimentList experiments={experiments} title="" onlyAvailable={true} />
         </section>
 
         <section id="about" className="mb-12">

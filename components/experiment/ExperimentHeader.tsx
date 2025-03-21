@@ -10,7 +10,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { getExperiment, modules } from "@/lib/database"
+import { getExperiment, modules, getModuleExperiments, Experiment } from "@/lib/database"
+import { ChevronDown } from "lucide-react"
 
 interface ExperimentHeaderProps {
   experimentId: string
@@ -19,8 +20,10 @@ interface ExperimentHeaderProps {
 export function ExperimentHeader({ experimentId }: ExperimentHeaderProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [experiment, setExperiment] = useState<any>(null)
+  const [experiment, setExperiment] = useState<Experiment | null>(null)
   const [module, setModule] = useState<any>(null)
+  const [moduleExperiments, setModuleExperiments] = useState<Experiment[]>([])
+  const [menuOpen, setMenuOpen] = useState(false)
   
   // 获取实验和模块数据
   useEffect(() => {
@@ -43,6 +46,9 @@ export function ExperimentHeader({ experimentId }: ExperimentHeaderProps) {
       const mod = modules.find(m => m.id === exp.module)
       if (mod) {
         setModule(mod)
+        // 获取该模块下的所有实验
+        const experiments = getModuleExperiments(mod.id)
+        setModuleExperiments(experiments)
       }
       
       setLoading(false)
@@ -51,6 +57,19 @@ export function ExperimentHeader({ experimentId }: ExperimentHeaderProps) {
       setLoading(false)
     }
   }, [experimentId])
+  
+  // 点击外部关闭下拉菜单
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (!target.closest("#experiments-dropdown") && !target.closest("#experiments-menu")) {
+        setMenuOpen(false)
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside)
+    return () => document.removeEventListener("click", handleClickOutside)
+  }, [])
   
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-10">
@@ -99,6 +118,45 @@ export function ExperimentHeader({ experimentId }: ExperimentHeaderProps) {
               )}
             </div>
           </div>
+          
+          {/* 实验切换下拉菜单 */}
+          {!loading && !error && experiment && moduleExperiments.length > 0 && (
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <button
+                  id="experiments-dropdown"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 flex items-center"
+                  onClick={() => setMenuOpen(!menuOpen)}
+                >
+                  <span>{experiment.title}</span>
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </button>
+                {menuOpen && (
+                  <div
+                    id="experiments-menu"
+                    className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20"
+                  >
+                    <div className="py-1" role="menu" aria-orientation="vertical">
+                      {moduleExperiments.map((exp) => (
+                        <Link
+                          key={exp.id}
+                          href={exp.route || `/experiments/${exp.id}`}
+                          className={`block px-4 py-2 text-sm hover:bg-gray-100 ${
+                            exp.id === experiment.id 
+                              ? "font-semibold text-indigo-600" 
+                              : "text-gray-700"
+                          }`}
+                          role="menuitem"
+                        >
+                          {exp.title}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </nav>
