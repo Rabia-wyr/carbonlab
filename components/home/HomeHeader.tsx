@@ -15,11 +15,11 @@ export default function HomeHeader() {
 
     // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-anchor.addEventListener("click", (e) => {
-  e.preventDefault();
+      anchor.addEventListener("click", (e) => {
+        e.preventDefault();
 
-  const anchorElement = e.currentTarget as HTMLAnchorElement;
-  const href = anchorElement?.getAttribute("href");
+        const anchorElement = e.currentTarget as HTMLAnchorElement;
+        const href = anchorElement?.getAttribute("href");
         if (href) {
           const element = document.querySelector(href)
           if (element) {
@@ -44,7 +44,7 @@ anchor.addEventListener("click", (e) => {
           <div className="flex items-center">
             <span className="text-xl font-semibold text-gray-800">
               <i className="fas fa-atom mr-2 text-indigo-600"></i>
-              物理可视化教学
+              碳经济可视化教学平台
             </span>
           </div>
           {/* Desktop navigation */}

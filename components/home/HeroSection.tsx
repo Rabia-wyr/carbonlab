@@ -6,10 +6,10 @@ export default function HeroSection() {
       <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg overflow-hidden">
         <div className="md:flex">
           <div className="md:flex-1 p-8 md:p-12 text-white">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">高中物理可视化教学平台</h1>
-            <p className="text-lg md:text-xl mb-6 opacity-90">通过交互式动画模拟，深入理解物理概念和原理</p>
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">碳经济可视化教学平台</h1>
+            <p className="text-lg md:text-xl mb-6 opacity-90">面向双碳战略的仿真模拟教学系统</p>
             <p className="text-base md:text-lg mb-8 opacity-80">
-              本平台提供多个经典物理现象的可视化模拟，帮助学生直观地理解抽象概念，培养物理直觉和科学思维。
+              本平台集成碳监测、碳核算、碳交易与碳中和四大核心模块，提供从理论到实践的全流程实训支持。
             </p>
             <a
               href="#simulations"

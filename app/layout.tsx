@@ -7,9 +7,8 @@ import Script from "next/script"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "物理可视化教学平台",
-  description: "高中物理可视化教学平台，让抽象的物理概念变得直观易懂",
-  generator: 'v0.dev'
+  title: "碳经济可视化教学平台",
+  description: "面向双碳战略的仿真模拟教学系统",
 }
 
 export default function RootLayout({
