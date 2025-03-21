@@ -12,7 +12,7 @@ export default function HeroSection() {
               本平台集成碳监测、碳核算、碳交易与碳中和四大核心模块，提供从理论到实践的全流程实训支持。
             </p>
             <a
-              href="#simulations"
+              href="#categories"
               className="inline-block bg-white text-indigo-600 font-medium px-6 py-3 rounded-lg shadow-md hover:bg-gray-50 transition duration-300 transform hover:scale-105"
             >
               <i className="fas fa-play-circle mr-2"></i>开始探索

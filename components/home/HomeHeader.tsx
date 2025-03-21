@@ -43,7 +43,7 @@ export default function HomeHeader() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <span className="text-xl font-semibold text-gray-800">
-              <i className="fas fa-atom mr-2 text-indigo-600"></i>
+              <i className="fas fa-leaf mr-2 text-green-500"></i>
               碳经济可视化教学平台
             </span>
           </div>
@@ -59,13 +59,13 @@ export default function HomeHeader() {
               href="#categories"
               className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
             >
-              五大领域
+              四大领域
             </a>
             <a
-              href="#simulations"
+              href="#experiments"
               className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
             >
-              热门模块
+              热门实验
             </a>
             <a
               href="#about"
@@ -98,13 +98,13 @@ export default function HomeHeader() {
             href="#categories"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
           >
-            五大领域
+            四大领域
           </a>
           <a
-            href="#simulations"
+            href="#experiments"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
           >
-            热门模块
+            热门实验
           </a>
           <a
             href="#about"

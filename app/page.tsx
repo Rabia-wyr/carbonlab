@@ -47,8 +47,8 @@ export default function Home() {
         <HeroSection />
         <FeaturesGrid />
 
-        <section id="simulations" className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门模块</h2>
+        <section id="experiments" className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门实验</h2>
           <p className="mb-8 text-gray-600">这些是我们平台上精选的模拟实验，每个领域各一个。每个模拟都提供了交互控制，让您能够调整参数，观察变化。更多模块可在各领域页面中找到。</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* 碳足迹计算器 */}
