@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { notFound, useParams } from "next/navigation"
-import { modules, Module, Difficulty } from "@/lib/database"
+import { modules, Module, Difficulty, getModuleExperiments } from "@/lib/database"
 import ModuleHeader from "@/components/module/ModuleHeader"
 import ExperimentList from "@/components/module/ExperimentList"
 import SearchAndFilter from "@/components/module/SearchAndFilter"
@@ -21,6 +21,9 @@ export default function ModulePage() {
   if (!module) {
     notFound()
   }
+
+  // 获取当前模块的所有实验
+  const moduleExperiments = getModuleExperiments(moduleId)
 
   // 根据 module.id 选择合适的图标
   const getModuleIcon = () => {
@@ -86,7 +89,7 @@ export default function ModulePage() {
 
           {/* 实验列表 */}
           <ExperimentList
-            module={module}
+            experiments={moduleExperiments}
             searchTerm={searchTerm}
             difficultyFilter={difficultyFilter}
           />

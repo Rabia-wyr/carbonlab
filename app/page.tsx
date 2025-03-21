@@ -5,6 +5,8 @@ import HeroSection from "@/components/home/HeroSection"
 import FeaturesGrid from "@/components/home/FeaturesGrid"
 import Footer from "@/components/home/Footer"
 import HomeHeader from "@/components/home/HomeHeader"
+import ExperimentList from "@/components/module/ExperimentList"
+import { experiments } from "@/lib/database"
 
 export default function Home() {
   useEffect(() => {
@@ -49,68 +51,10 @@ export default function Home() {
 
         <section id="experiments" className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门实验</h2>
-          <p className="mb-8 text-gray-600">这些是我们平台上精选的模拟实验，每个领域各一个。每个模拟都提供了交互控制，让您能够调整参数，观察变化。更多模块可在各领域页面中找到。</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* 碳足迹计算器 */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]">
-              <div className="h-48 overflow-hidden bg-emerald-50 flex items-center justify-center">
-                <i className="fas fa-shoe-prints text-6xl text-emerald-600"></i>
-              </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-semibold text-gray-800">碳足迹计算器</h3>
-                  <span className="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded">基础</span>
-                </div>
-                <p className="text-gray-600 mb-4">模拟不同场景下的碳排放计算与可视化分析</p>
-                <a
-                  href="#"
-                  className="inline-block bg-emerald-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-emerald-700 transition duration-300 transform hover:scale-105"
-                >
-                  <i className="fas fa-calculator mr-2"></i>开始计算
-                </a>
-              </div>
-            </div>
-
-            {/* 碳交易模拟器 */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]">
-              <div className="h-48 overflow-hidden bg-purple-50 flex items-center justify-center">
-                <i className="fas fa-coins text-6xl text-purple-600"></i>
-              </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-semibold text-gray-800">碳交易模拟</h3>
-                  <span className="text-xs font-medium bg-purple-100 text-purple-800 px-2 py-1 rounded">中级</span>
-                </div>
-                <p className="text-gray-600 mb-4">模拟碳排放权交易市场，体验配额分配与交易策略</p>
-                <a
-                  href="#"
-                  className="inline-block bg-purple-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-300 transform hover:scale-105"
-                >
-                  <i className="fas fa-hand-holding-usd mr-2"></i>开始交易
-                </a>
-              </div>
-            </div>
-
-            {/* 碳中和路径规划 */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]">
-              <div className="h-48 overflow-hidden bg-green-50 flex items-center justify-center">
-                <i className="fas fa-chart-pie text-6xl text-green-600"></i>
-              </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-semibold text-gray-800">碳中和路径</h3>
-                  <span className="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded">高级</span>
-                </div>
-                <p className="text-gray-600 mb-4">多场景碳中和方案设计与效果模拟</p>
-                <a
-                  href="#"
-                  className="inline-block bg-green-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 transform hover:scale-105"
-                >
-                  <i className="fas fa-road mr-2"></i>路径规划
-                </a>
-              </div>
-            </div>
-          </div>
+          <p className="mb-8 text-gray-600">探索我们平台上的精选模拟实验，每个实验都提供了交互控制，让您能够调整参数，观察变化。更多实验可在各领域模块页面中找到。</p>
+          
+          {/* 使用 ExperimentList 组件展示所有实验，不显示额外的标题 */}
+          <ExperimentList experiments={experiments} title="" />
         </section>
 
         <section id="about" className="mb-12">

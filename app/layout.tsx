@@ -2,6 +2,7 @@ import type React from "react"
 import "@/app/globals.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/sonner"
 import Script from "next/script"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.12.0/math.min.js" />
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" />
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js" />
+        <Toaster />
       </body>
     </html>
   )
