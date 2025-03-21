@@ -12,7 +12,7 @@ const iconMap = {
   "carbon-neutral": NeutralIcon,
 } as const
 
-export default function FeaturesGrid() {
+export default function ModulesGrid() {
   return (
     <section id="categories" className="mb-12">
       <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">四大领域</h2>

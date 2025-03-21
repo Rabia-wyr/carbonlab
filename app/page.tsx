@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import HeroSection from "@/components/home/HeroSection"
-import FeaturesGrid from "@/components/home/FeaturesGrid"
+import ModulesGrid from "@/components/home/ModulesGrid"
 import Footer from "@/components/home/Footer"
 import HomeHeader from "@/components/home/HomeHeader"
 import ExperimentList from "@/components/module/ExperimentList"
@@ -47,7 +47,7 @@ export default function Home() {
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <HeroSection />
-        <FeaturesGrid />
+        <ModulesGrid />
 
         <section id="experiments" className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门实验</h2>
