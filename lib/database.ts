@@ -60,7 +60,7 @@ export const experiments: Experiment[] = [
     title: "个人碳足迹计算器",
     description: "计算并分析个人日常生活中的碳排放量",
     difficulty: "基础",
-    status: "开发中",
+    status: "已上线",
     icon: "user",
     route: "/experiments/personal-carbon-footprint",
     module: "carbon-calculate"

@@ -4,6 +4,14 @@ import { useState, useEffect } from "react"
 import { Module, modules } from "@/lib/database"
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 
 interface ModuleHeaderProps {
   module: Module
@@ -29,15 +37,31 @@ export default function ModuleHeader({ module }: ModuleHeaderProps) {
     <nav className="bg-white shadow-sm sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-semibold text-gray-800">
+          <div className="flex items-center space-x-4">
+            <Link href="/" className="text-xl font-semibold text-gray-800 shrink-0">
               <i className="fas fa-leaf mr-2 text-green-500"></i>
               碳经济可视化教学平台
             </Link>
+            
+            {/* 面包屑导航 */}
+            <div className="hidden md:flex">
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/" className="text-sm text-gray-600 hover:text-gray-900">首页</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="text-gray-400" />
+                  
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-sm font-medium text-gray-900">{module.title}</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </div>
           </div>
           
           {/* 桌面导航 */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
             <div className="relative">
               <button
                 id="modules-dropdown"
