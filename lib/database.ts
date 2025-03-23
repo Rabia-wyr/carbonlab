@@ -33,6 +33,17 @@ export type Module = {
 
 // 所有实验的合并清单
 export const experiments: Experiment[] = [
+  // 全球碳排放地图
+  {
+    id: "carbon-emission-map",
+    title: "全球碳排放地图",
+    description: "基于地理空间数据的碳排放分布可视化与动态监测",
+    difficulty: "中级",
+    status: "已上线",
+    icon: "map-marked-alt",
+    route: "/experiments/carbon-emission-map",
+    module: "carbon-monitor"
+  },
   // 碳监测模块实验
   {
     id: "emission-source",
@@ -118,7 +129,7 @@ export const modules: Module[] = [
     icon: "chart-line",
     color: "emerald",
     gradient: "from-green-600 to-emerald-700",
-    experimentIds: ["emission-source"],
+    experimentIds: ["carbon-emission-map", "emission-source"],
   },
   {
     id: "carbon-calculate",
