@@ -18,6 +18,18 @@ export type Experiment = {
   module: string
 }
 
+// 课程类型
+export type Course = {
+  id: string
+  title: string
+  description: string
+  difficulty: "beginner" | "intermediate" | "advanced"
+  status: "draft" | "published" | "archived"
+  icon: string
+  route: string
+  module: string
+}
+
 // 模块类型
 export type Module = {
   id: string
@@ -29,6 +41,7 @@ export type Module = {
   subtitle?: string
   headerSvg?: ReactNode
   experimentIds: string[]  // 改为存储实验ID列表而非完整实验对象
+  courseIds: string[]  // 新增课程ID列表
 }
 
 // 所有实验的合并清单
@@ -120,6 +133,94 @@ export const experiments: Experiment[] = [
   },
 ]
 
+// 所有课程的合并清单
+export const courses: Course[] = [
+  // 碳监测课程
+  {
+    id: "monitor-principles",
+    title: "碳监测原理与技术",
+    description: "学习碳排放监测的基本原理、方法和技术，包括直接测量和间接计算方法。",
+    difficulty: "beginner",
+    status: "published",
+    icon: "broadcast-tower",
+    route: "/courses/monitor-principles",
+    module: "carbon-monitor",
+  },
+  {
+    id: "satellite-monitoring",
+    title: "卫星遥感监测技术",
+    description: "探索如何利用卫星遥感技术进行大范围碳排放和碳汇监测，了解数据处理与分析方法。",
+    difficulty: "intermediate",
+    status: "published",
+    icon: "satellite",
+    route: "/courses/satellite-monitoring",
+    module: "carbon-monitor",
+  },
+  // 碳核算课程
+  {
+    id: "carbon-accounting-standards",
+    title: "碳核算标准与方法",
+    description: "深入学习国内外主要碳核算标准，包括ISO 14064、温室气体核算体系等规范与方法。",
+    difficulty: "intermediate",
+    status: "published",
+    icon: "calculator",
+    route: "/courses/carbon-accounting-standards",
+    module: "carbon-calculate",
+  },
+  {
+    id: "life-cycle-assessment",
+    title: "产品生命周期评价",
+    description: "掌握产品全生命周期碳足迹评估方法，学习如何识别和量化产品各阶段的碳排放。",
+    difficulty: "advanced",
+    status: "published",
+    icon: "recycle",
+    route: "/courses/life-cycle-assessment",
+    module: "carbon-calculate",
+  },
+  // 碳交易课程
+  {
+    id: "carbon-trading-fundamentals",
+    title: "碳交易基础知识",
+    description: "了解碳排放权交易的基本概念、机制和全球主要碳市场的运行规则。",
+    difficulty: "beginner",
+    status: "published",
+    icon: "exchange",
+    route: "/courses/carbon-trading-fundamentals",
+    module: "carbon-trading",
+  },
+  {
+    id: "carbon-derivatives",
+    title: "碳金融与衍生品",
+    description: "探索碳市场中的金融产品和衍生品，包括碳期货、期权及其定价和风险管理策略。",
+    difficulty: "advanced",
+    status: "published",
+    icon: "line-chart",
+    route: "/courses/carbon-derivatives",
+    module: "carbon-trading",
+  },
+  // 碳中和课程
+  {
+    id: "renewable-energy-integration",
+    title: "可再生能源系统集成",
+    description: "学习如何规划和实施可再生能源系统，包括太阳能、风能等在企业减碳中的应用。",
+    difficulty: "intermediate",
+    status: "published",
+    icon: "sun",
+    route: "/courses/renewable-energy-integration",
+    module: "carbon-neutral",
+  },
+  {
+    id: "carbon-capture-technologies",
+    title: "碳捕集与封存技术",
+    description: "了解最新的碳捕集、利用与封存(CCUS)技术，探索其在实现碳中和目标中的潜力。",
+    difficulty: "advanced",
+    status: "published",
+    icon: "filter",
+    route: "/courses/carbon-capture-technologies",
+    module: "carbon-neutral",
+  },
+]
+
 // 四大模块
 export const modules: Module[] = [
   {
@@ -130,6 +231,7 @@ export const modules: Module[] = [
     color: "emerald",
     gradient: "from-green-600 to-emerald-700",
     experimentIds: ["carbon-emission-map", "emission-source"],
+    courseIds: ["monitor-principles", "satellite-monitoring"],
   },
   {
     id: "carbon-calculate",
@@ -139,6 +241,7 @@ export const modules: Module[] = [
     color: "blue",
     gradient: "from-blue-600 to-indigo-700",
     experimentIds: ["personal-carbon-footprint", "enterprise-carbon-footprint"],
+    courseIds: ["carbon-accounting-standards", "life-cycle-assessment"],
   },
   {
     id: "carbon-trading",
@@ -148,6 +251,7 @@ export const modules: Module[] = [
     color: "purple",
     gradient: "from-purple-600 to-violet-700",
     experimentIds: ["carbon-market-simulation", "trading-strategy"],
+    courseIds: ["carbon-trading-fundamentals", "carbon-derivatives"],
   },
   {
     id: "carbon-neutral",
@@ -157,6 +261,7 @@ export const modules: Module[] = [
     color: "orange",
     gradient: "from-orange-600 to-amber-700",
     experimentIds: ["carbon-sink-measurement", "neutral-path-planning"],
+    courseIds: ["renewable-energy-integration", "carbon-capture-technologies"],
   },
 ]
 
@@ -171,4 +276,14 @@ export function getModuleExperiments(moduleId: string): Experiment[] {
 // 辅助函数：获取实验详情
 export function getExperiment(experimentId: string): Experiment | undefined {
   return experiments.find(exp => exp.id === experimentId);
-} 
+}
+
+// 辅助函数：获取课程详情
+export function getCourse(courseId: string): Course | undefined {
+  return courses.find(course => course.id === courseId);
+}
+
+// 辅助函数：根据模块获取该模块的所有课程
+export function getModuleCourses(moduleId: string) {
+  return courses.filter(course => course.module === moduleId);
+}

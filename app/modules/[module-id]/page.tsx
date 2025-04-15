@@ -2,13 +2,16 @@
 
 import { useState } from "react"
 import { notFound, useParams } from "next/navigation"
-import { modules, Module, Difficulty, getModuleExperiments } from "@/lib/database"
+import { modules, Module, Difficulty, getModuleExperiments, Course } from "@/lib/database"
+import { getCoursesByModule } from "@/lib/courses"
 import ModuleHeader from "@/components/module/ModuleHeader"
 import ExperimentList from "@/components/module/ExperimentList"
+import CourseList from "@/components/module/CourseList"
 import SearchAndFilter from "@/components/module/SearchAndFilter"
 import Footer from "@/components/home/Footer"
 import Link from "next/link"
 import { MonitorIcon, CalculateIcon, TradeIcon, NeutralIcon } from "@/components/module/ModuleIcons"
+import React from "react"
 
 export default function ModulePage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -22,6 +25,9 @@ export default function ModulePage() {
     notFound()
   }
 
+  // 获取当前模块的所有课程
+  const moduleCourses = getCoursesByModule(moduleId) as Course[]
+  
   // 获取当前模块的所有实验
   const moduleExperiments = getModuleExperiments(moduleId)
 
@@ -85,6 +91,13 @@ export default function ModulePage() {
           <SearchAndFilter
             onSearch={setSearchTerm}
             onDifficultyChange={setDifficultyFilter}
+          />
+
+          {/* 课程列表 */}
+          <CourseList
+            courses={moduleCourses}
+            searchTerm={searchTerm}
+            difficultyFilter={difficultyFilter}
           />
 
           {/* 实验列表 */}

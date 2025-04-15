@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useState } from "react"
 import { useParams, usePathname } from "next/navigation"
 import { ExperimentHeader } from "@/components/experiment/ExperimentHeader"
+import React from "react"
 
 interface ExperimentLayoutProps {
   children: ReactNode
@@ -13,10 +14,10 @@ export default function ExperimentLayout({ children }: ExperimentLayoutProps) {
   const pathname = usePathname()
   
   // 提取实验ID，可能从路径参数或URL路径中获取
-  const getExperimentId = () => {
-    // 首先尝试从路径参数获取
+  const getExperimentId = (): string => {
+    // 直接从 params 对象获取实验 ID
     if (params && params["experiment-id"]) {
-      return params["experiment-id"] as string
+      return params["experiment-id"]
     }
     
     // 如果没有路径参数，从URL路径中提取

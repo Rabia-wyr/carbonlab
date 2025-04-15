@@ -11,12 +11,20 @@ export default function HeroSection() {
             <p className="text-base md:text-lg mb-8 opacity-80">
               本平台集成碳监测、碳核算、碳交易与碳中和四大核心模块，提供从理论到实践的全流程实训支持。
             </p>
-            <a
-              href="#categories"
-              className="inline-block bg-white text-indigo-600 font-medium px-6 py-3 rounded-lg shadow-md hover:bg-gray-50 transition duration-300 transform hover:scale-105"
-            >
-              <i className="fas fa-play-circle mr-2"></i>开始探索
-            </a>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="#categories"
+                className="inline-block bg-white text-indigo-600 font-medium px-6 py-3 rounded-lg shadow-md hover:bg-gray-50 transition duration-300 transform hover:scale-105"
+              >
+                <i className="fas fa-play-circle mr-2"></i>开始探索
+              </a>
+              <a
+                href="/resources"
+                className="inline-block bg-indigo-700 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:bg-indigo-800 transition duration-300 transform hover:scale-105 border border-white/20"
+              >
+                <i className="fas fa-book mr-2"></i>浏览资源
+              </a>
+            </div>
           </div>
           <div className="md:flex-1 flex items-center justify-center p-8 md:p-12 bg-indigo-800 bg-opacity-30">
             <svg

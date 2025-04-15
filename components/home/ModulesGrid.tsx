@@ -31,6 +31,7 @@ export default function ModulesGrid() {
                 module.id === "carbon-monitor" ? "from-green-600 to-emerald-700" :
                 module.id === "carbon-calculate" ? "from-blue-600 to-indigo-700" :
                 module.id === "carbon-trading" ? "from-purple-600 to-violet-700" :
+                module.id === "carbon-neutral" ? "from-orange-600 to-amber-700" :
                 "from-orange-600 to-amber-700"
               } aspect-[3/2] flex items-center justify-center p-4`}>
                 <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-yellow-400 opacity-20"></div>

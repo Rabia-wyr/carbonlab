@@ -1,14 +1,19 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import HeroSection from "@/components/home/HeroSection"
 import ModulesGrid from "@/components/home/ModulesGrid"
 import Footer from "@/components/home/Footer"
 import HomeHeader from "@/components/home/HomeHeader"
 import ExperimentList from "@/components/module/ExperimentList"
+import { CourseCard } from "@/components/course/CourseCard"
 import { experiments } from "@/lib/database"
+import { getCourses } from "@/lib/courses"
 
 export default function Home() {
+  const [courses, setCourses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const mobileMenuButton = document.getElementById("mobile-menu-button")
     const mobileMenu = document.getElementById("mobile-menu")
@@ -38,6 +43,20 @@ export default function Home() {
         }
       });
     })
+
+    // 获取课程数据
+    async function fetchCourses() {
+      setLoading(true);
+      const coursesData = await getCourses();
+      // 只显示已上线的课程，并且限制为3个
+      const availableCourses = coursesData
+        .filter(course => course.status !== "draft" && course.status !== "archived")        
+        .slice(0, 3);
+      setCourses(availableCourses);
+      setLoading(false);
+    }
+
+    fetchCourses();
   }, [])
 
   return (
@@ -48,6 +67,26 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <HeroSection />
         <ModulesGrid />
+
+        <section id="courses" className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门课程</h2>
+          <p className="mb-8 text-gray-600">探索我们平台上的精选课程，每个课程都包含了系统化的学习路径和丰富的实践内容，帮助您从零开始掌握碳经济相关知识。</p>
+          
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="text-center">
+                <div className="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p className="mt-4 text-muted-foreground">加载课程中...</p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((course) => (
+                <CourseCard key={course.id} course={course} />
+              ))}
+            </div>
+          )}
+        </section>
 
         <section id="experiments" className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门实验</h2>

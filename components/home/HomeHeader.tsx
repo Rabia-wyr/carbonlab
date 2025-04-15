@@ -62,6 +62,12 @@ export default function HomeHeader() {
               四大领域
             </a>
             <a
+              href="#courses"
+              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+            >
+              热门课程
+            </a>
+            <a
               href="#experiments"
               className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
             >
@@ -99,6 +105,12 @@ export default function HomeHeader() {
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
           >
             四大领域
+          </a>
+          <a
+            href="#courses"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+          >
+            热门课程
           </a>
           <a
             href="#experiments"
