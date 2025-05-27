@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import HeroSection from "@/components/home/HeroSection"
 import ModulesGrid from "@/components/home/ModulesGrid"
 import Footer from "@/components/home/Footer"
 import HomeHeader from "@/components/home/HomeHeader"

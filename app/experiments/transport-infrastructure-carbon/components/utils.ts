@@ -1,30 +1,30 @@
-import { CarbonCalculationData, CalculationResults, emissionFactors } from "./types"
+import { CarbonCalculationData, CalculationResults } from "./types"
 
 // 计算碳排放
 export function calculateEmissions(carbonData: CarbonCalculationData): CalculationResults {
   // 人工碳排放
-  const laborEmissions = 
-    carbonData.labor.workers * carbonData.labor.workDays * emissionFactors.labor.accommodation +
-    carbonData.labor.workers * carbonData.labor.transportDistance * emissionFactors.labor.transport
+  const laborEmissions = carbonData.labor.reduce((sum, item) => sum + item.emission, 0)
 
   // 机械使用碳排放
-  const machineryEmissions = 
-    carbonData.machinery.excavators * carbonData.machinery.operatingHours * emissionFactors.machinery.excavator +
-    carbonData.machinery.trucks * 50 * emissionFactors.machinery.truck + // 假设每台卡车每天行驶50km
-    carbonData.machinery.cranes * carbonData.machinery.operatingHours * emissionFactors.machinery.crane
+  const machineryEmissions = carbonData.machinery.reduce((sum, item) => sum + item.emission, 0)
 
   // 材料碳排放
-  const materialsEmissions = 
-    carbonData.materials.concrete * emissionFactors.materials.concrete +
-    carbonData.materials.steel * emissionFactors.materials.steel +
-    carbonData.materials.asphalt * emissionFactors.materials.asphalt +
-    carbonData.materials.gravel * emissionFactors.materials.gravel
+  const materialsEmissions = carbonData.materials.reduce((sum, item) => sum + item.emission, 0)
 
   // 能源碳排放
-  const energyEmissions = 
-    carbonData.energy.electricity * emissionFactors.energy.electricity +
-    carbonData.energy.diesel * emissionFactors.energy.diesel +
-    carbonData.energy.gasoline * emissionFactors.energy.gasoline
+  const energyEmissions = carbonData.energy.reduce((sum, item) => sum + item.emission, 0)
+
+  // 按范围计算
+  const allItems = [
+    ...carbonData.labor,
+    ...carbonData.machinery,
+    ...carbonData.materials,
+    ...carbonData.energy
+  ]
+
+  const scope1Emissions = allItems.filter(item => item.scope === "范围一").reduce((sum, item) => sum + item.emission, 0)
+  const scope2Emissions = allItems.filter(item => item.scope === "范围二").reduce((sum, item) => sum + item.emission, 0)
+  const scope3Emissions = allItems.filter(item => item.scope === "范围三").reduce((sum, item) => sum + item.emission, 0)
 
   const total = laborEmissions + machineryEmissions + materialsEmissions + energyEmissions
 
@@ -33,6 +33,9 @@ export function calculateEmissions(carbonData: CarbonCalculationData): Calculati
     machinery: Math.round(machineryEmissions),
     materials: Math.round(materialsEmissions),
     energy: Math.round(energyEmissions),
-    total: Math.round(total)
+    total: Math.round(total),
+    scope1: Math.round(scope1Emissions),
+    scope2: Math.round(scope2Emissions),
+    scope3: Math.round(scope3Emissions)
   }
 } 
