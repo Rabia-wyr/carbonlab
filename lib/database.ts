@@ -89,6 +89,16 @@ export const experiments: Experiment[] = [
     route: "/experiments/enterprise-carbon-footprint",
     module: "carbon-calculate"
   },
+  {
+    id: "transport-infrastructure-carbon",
+    title: "交通基础设施碳核算实验",
+    description: "交通基础设施建设项目的全生命周期碳排放核算与分析",
+    difficulty: "中级",
+    status: "已上线",
+    icon: "road",
+    route: "/experiments/transport-infrastructure-carbon",
+    module: "carbon-calculate"
+  },
   // 碳交易模块实验
   {
     id: "carbon-market-simulation",
@@ -225,8 +235,8 @@ export const courses: Course[] = [
 export const modules: Module[] = [
   {
     id: "carbon-monitor",
-    title: "碳监测",
-    description: "实时数据采集与排放源识别技术实训",
+    title: "碳监测与计量",
+    description: "激光雷达、土壤呼吸监测等多技术融合，真实感知碳排放数据",
     icon: "chart-line",
     color: "emerald",
     gradient: "from-green-600 to-emerald-700",
@@ -235,18 +245,18 @@ export const modules: Module[] = [
   },
   {
     id: "carbon-calculate",
-    title: "碳核算",
-    description: "全生命周期碳足迹计算与核查方法",
+    title: "碳核算与管理",
+    description: "全生命周期碳管理，从清单到反演，精准核算",
     icon: "calculator",
     color: "blue",
     gradient: "from-blue-600 to-indigo-700",
-    experimentIds: ["personal-carbon-footprint", "enterprise-carbon-footprint"],
+    experimentIds: ["personal-carbon-footprint", "enterprise-carbon-footprint", "transport-infrastructure-carbon"],
     courseIds: ["carbon-accounting-standards", "life-cycle-assessment"],
   },
   {
     id: "carbon-trading",
     title: "碳交易",
-    description: "碳排放权交易市场机制与策略模拟",
+    description: "数字碳产权多轮模拟，让你成为碳市场交易的行家",
     icon: "exchange-alt",
     color: "purple",
     gradient: "from-purple-600 to-violet-700",
@@ -256,7 +266,7 @@ export const modules: Module[] = [
   {
     id: "carbon-neutral",
     title: "碳中和",
-    description: "碳汇计量与碳中和路径规划实践",
+    description: "多场景沙盘演练，体验企业运营中的低碳决策过程",
     icon: "leaf",
     color: "orange",
     gradient: "from-orange-600 to-amber-700",
