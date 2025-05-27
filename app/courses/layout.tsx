@@ -69,7 +69,7 @@ export default function CourseLayout({ children }: CourseLayoutProps) {
             <div className="flex items-center space-x-4">
               <Link href="/" className="text-xl font-semibold text-gray-800 shrink-0">
                 <i className="fas fa-leaf mr-2 text-green-500"></i>
-                碳经济可视化教学平台
+                碳经济与管理AI实训平台
               </Link>
               
               {/* 面包屑导航 */}

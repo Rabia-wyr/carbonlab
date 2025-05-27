@@ -15,10 +15,10 @@ const iconMap = {
 export default function ModulesGrid() {
   return (
     <section id="categories" className="mb-12">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">四大领域</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">四大模块</h2>
       <p className="mb-8 text-gray-600">掌握碳经济关键环节，构建完整知识体系</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {modules.map((module) => {
           const Icon = iconMap[module.id as keyof typeof iconMap]
           return (

@@ -9,6 +9,7 @@ import ExperimentList from "@/components/module/ExperimentList"
 import { CourseCard } from "@/components/course/CourseCard"
 import { experiments } from "@/lib/database"
 import { getCourses } from "@/lib/courses"
+import { HeroBanner } from "@/components/home/HeroBanner"
 
 export default function Home() {
   const [courses, setCourses] = useState<any[]>([]);
@@ -65,7 +66,7 @@ export default function Home() {
 
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <HeroSection />
+        <HeroBanner />
         <ModulesGrid />
 
         <section id="courses" className="mb-12">

@@ -44,7 +44,7 @@ export default function HomeHeader() {
           <div className="flex items-center">
             <span className="text-xl font-semibold text-gray-800">
               <i className="fas fa-leaf mr-2 text-green-500"></i>
-              碳经济可视化教学平台
+              碳经济与管理AI实训平台
             </span>
           </div>
           {/* Desktop navigation */}
@@ -59,7 +59,7 @@ export default function HomeHeader() {
               href="#categories"
               className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
             >
-              四大领域
+              四大模块
             </a>
             <a
               href="#courses"
@@ -104,7 +104,7 @@ export default function HomeHeader() {
             href="#categories"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
           >
-            四大领域
+            四大模块
           </a>
           <a
             href="#courses"

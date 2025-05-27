@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="md:flex md:justify-between">
           <div className="mb-8 md:mb-0">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">碳经济可视化教学平台</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">碳经济与管理AI实训平台</h3>
             <p className="text-gray-600">面向双碳战略的仿真模拟教学系统</p>
           </div>
           <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
@@ -53,7 +53,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-200 md:flex md:items-center md:justify-between">
-          <p className="text-sm text-gray-500">&copy; 2025 碳经济可视化教学平台. All Rights Reserved.</p>
+          <p className="text-sm text-gray-500">&copy; 2025 碳经济与管理AI实训平台. All Rights Reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-indigo-600">
               <i className="fab fa-weixin"></i>

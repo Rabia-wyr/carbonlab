@@ -6,7 +6,7 @@ export default function HeroSection() {
       <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg overflow-hidden">
         <div className="md:flex">
           <div className="md:flex-1 p-8 md:p-12 text-white">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">碳经济可视化教学平台</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">碳经济与管理AI实训平台</h1>
             <p className="text-lg md:text-xl mb-6 opacity-90">面向双碳战略的仿真模拟教学系统</p>
             <p className="text-base md:text-lg mb-8 opacity-80">
               本平台集成碳监测、碳核算、碳交易与碳中和四大核心模块，提供从理论到实践的全流程实训支持。

@@ -8,7 +8,7 @@ import Script from "next/script"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "碳经济可视化教学平台",
+  title: "碳经济与管理AI实训平台",
   description: "面向双碳战略的仿真模拟教学系统",
 }
 
