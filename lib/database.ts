@@ -46,10 +46,10 @@ export type Module = {
 
 // 所有实验的合并清单
 export const experiments: Experiment[] = [
-  // 全球碳中和预测
+  // 碳中和预测
   {
     id: "global-carbon-neutral-prediction",
-    title: "全球碳中和预测",
+    title: "碳中和预测",
     description: "基于机器学习和大数据分析的全球碳中和路径预测与情景模拟",
     difficulty: "中级",
     status: "已上线",
