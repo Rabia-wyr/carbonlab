@@ -11,7 +11,13 @@ export function HeroBanner() {
   }
 
   return (
-    <div id="intro" className="relative h-[600px] bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white mb-12">
+    <div 
+      id="intro" 
+      className="relative h-[600px] bg-cover bg-center bg-no-repeat flex items-center justify-center text-white mb-12"
+      style={{
+        backgroundImage: 'url("/banner-1.webp")'
+      }}
+    >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
         <h1 className="text-4xl md:text-6xl font-bold leading-tight">

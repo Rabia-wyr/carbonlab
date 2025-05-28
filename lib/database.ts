@@ -46,100 +46,68 @@ export type Module = {
 
 // 所有实验的合并清单
 export const experiments: Experiment[] = [
-  // 全球碳排放地图
+  // 全球碳中和预测
   {
-    id: "carbon-emission-map",
-    title: "全球碳排放地图",
-    description: "基于地理空间数据的碳排放分布可视化与动态监测",
+    id: "global-carbon-neutral-prediction",
+    title: "全球碳中和预测",
+    description: "基于机器学习和大数据分析的全球碳中和路径预测与情景模拟",
     difficulty: "中级",
     status: "已上线",
-    icon: "map-marked-alt",
-    route: "/experiments/carbon-emission-map",
-    module: "carbon-monitor"
-  },
-  // 碳监测模块实验
-  {
-    id: "emission-source",
-    title: "排放源识别",
-    description: "使用机器学习识别和分类碳排放源",
-    difficulty: "高级",
-    status: "开发中",
-    icon: "microscope",
-    route: "/experiments/emission-source",
-    module: "carbon-monitor"
-  },
-  // 碳核算模块实验
-  {
-    id: "personal-carbon-footprint",
-    title: "个人碳足迹计算器",
-    description: "计算并分析个人日常生活中的碳排放量",
-    difficulty: "基础",
-    status: "已上线",
-    icon: "user",
-    route: "/experiments/personal-carbon-footprint",
-    module: "carbon-calculate"
+    icon: "globe",
+    route: "/experiments/global-carbon-neutral-prediction",
+    module: "carbon-neutral"
   },
   {
-    id: "enterprise-carbon-footprint",
-    title: "企业碳足迹分析",
-    description: "企业生产经营活动的碳排放计算与分析",
-    difficulty: "高级",
-    status: "已上线",
-    icon: "building",
-    route: "/experiments/enterprise-carbon-footprint",
-    module: "carbon-calculate"
-  },
-  {
-    id: "transport-infrastructure-carbon",
-    title: "交通基础设施碳核算实验",
-    description: "交通基础设施建设项目的全生命周期碳排放核算与分析",
+    id: "carbon-monitoring-analysis",
+    title: "碳监测与计量分析",
+    description: "基于地理空间数据的碳排放分布可视化与动态监测分析",
     difficulty: "中级",
     status: "已上线",
-    icon: "road",
-    route: "/experiments/transport-infrastructure-carbon",
+    icon: "chart-area",
+    route: "/experiments/carbon-monitoring-analysis",
+    module: "carbon-monitor"
+  },
+  {
+    id: "project-carbon-calculation",
+    title: "项目碳精算实验",
+    description: "基础设施建设项目的全生命周期碳排放精确核算与分析",
+    difficulty: "中级",
+    status: "已上线",
+    icon: "calculator",
+    route: "/experiments/project-carbon-calculation",
+    module: "carbon-calculate"
+  },
+  // 产品碳足迹分析
+  {
+    id: "product-carbon-footprint",
+    title: "产品碳足迹分析",
+    description: "产品全生命周期碳足迹评估与环境影响分析",
+    difficulty: "高级",
+    status: "已上线",
+    icon: "shoe-prints",
+    route: "/experiments/product-carbon-footprint",
     module: "carbon-calculate"
   },
   // 碳交易模块实验
   {
-    id: "carbon-market-simulation",
-    title: "碳市场模拟交易",
-    description: "模拟碳排放权交易市场的运作机制",
+    id: "carbon-trading-simulation",
+    title: "碳交易模拟",
+    description: "模拟碳排放权交易市场的运作机制与交易策略",
     difficulty: "中级",
-    status: "开发中",
+    status: "已上线",
     icon: "chart-line",
-    route: "/experiments/carbon-market-simulation",
+    route: "/experiments/carbon-trading-simulation",
     module: "carbon-trading"
   },
   {
-    id: "trading-strategy",
-    title: "交易策略设计",
-    description: "设计和优化碳交易策略",
+    id: "carbon-financial-product-design",
+    title: "碳金融产品设计",
+    description: "设计和开发创新碳金融产品与风险管理工具",
     difficulty: "高级",
-    status: "开发中",
-    icon: "chess",
-    route: "/experiments/trading-strategy",
+    status: "已上线",
+    icon: "coins",
+    route: "/experiments/carbon-financial-product-design",
     module: "carbon-trading"
-  },
-  // 碳中和模块实验
-  {
-    id: "carbon-sink-measurement",
-    title: "碳汇计量方法",
-    description: "森林、海洋等自然碳汇的计量方法",
-    difficulty: "中级",
-    status: "开发中",
-    icon: "tree",
-    route: "/experiments/carbon-sink-measurement",
-    module: "carbon-neutral"
-  },
-  {
-    id: "neutral-path-planning",
-    title: "碳中和路径规划",
-    description: "区域碳中和实现路径的规划与优化",
-    difficulty: "高级",
-    status: "开发中",
-    icon: "route",
-    route: "/experiments/neutral-path-planning",
-    module: "carbon-neutral"
   },
 ]
 
@@ -240,7 +208,7 @@ export const modules: Module[] = [
     icon: "chart-line",
     color: "emerald",
     gradient: "from-green-600 to-emerald-700",
-    experimentIds: ["carbon-emission-map", "emission-source"],
+    experimentIds: ["carbon-monitoring-analysis"],
     courseIds: ["monitor-principles", "satellite-monitoring"],
   },
   {
@@ -250,7 +218,7 @@ export const modules: Module[] = [
     icon: "calculator",
     color: "blue",
     gradient: "from-blue-600 to-indigo-700",
-    experimentIds: ["personal-carbon-footprint", "enterprise-carbon-footprint", "transport-infrastructure-carbon"],
+    experimentIds: ["project-carbon-calculation", "product-carbon-footprint"],
     courseIds: ["carbon-accounting-standards", "life-cycle-assessment"],
   },
   {
@@ -260,7 +228,7 @@ export const modules: Module[] = [
     icon: "exchange-alt",
     color: "purple",
     gradient: "from-purple-600 to-violet-700",
-    experimentIds: ["carbon-market-simulation", "trading-strategy"],
+    experimentIds: ["carbon-trading-simulation", "carbon-financial-product-design"],
     courseIds: ["carbon-trading-fundamentals", "carbon-derivatives"],
   },
   {
@@ -270,7 +238,7 @@ export const modules: Module[] = [
     icon: "leaf",
     color: "orange",
     gradient: "from-orange-600 to-amber-700",
-    experimentIds: ["carbon-sink-measurement", "neutral-path-planning"],
+    experimentIds: ["global-carbon-neutral-prediction"],
     courseIds: ["renewable-energy-integration", "carbon-capture-technologies"],
   },
 ]

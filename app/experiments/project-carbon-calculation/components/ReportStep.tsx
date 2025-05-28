@@ -307,19 +307,11 @@ export function ReportStep({
         </div>
 
         {/* 操作按钮 */}
-        <div className="flex justify-between">
-          <Button variant="outline" onClick={() => onPrevious("calculation")}>
-            返回修改
+        <div className="flex justify-center">
+          <Button variant="outline" onClick={onDownloadReport}>
+            <Download className="w-4 h-4 mr-2" />
+            下载报告
           </Button>
-          <div className="space-x-2">
-            <Button variant="outline" onClick={onDownloadReport}>
-              <Download className="w-4 h-4 mr-2" />
-              下载报告
-            </Button>
-            <Button onClick={onComplete}>
-              完成实验
-            </Button>
-          </div>
         </div>
       </CardContent>
     </Card>

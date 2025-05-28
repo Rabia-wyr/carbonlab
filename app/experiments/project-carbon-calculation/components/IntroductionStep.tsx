@@ -9,11 +9,6 @@ interface IntroductionStepProps {
 }
 
 export function IntroductionStep({ onComplete, onNext }: IntroductionStepProps) {
-  const handleStartExperiment = () => {
-    onComplete()
-    onNext("inventory")
-  }
-
   return (
     <Card>
       <CardHeader>
@@ -65,12 +60,6 @@ export function IntroductionStep({ onComplete, onNext }: IntroductionStepProps) 
               <p className="text-sm text-gray-600">分别计算人工、机械、材料、能源四个方面的碳排放</p>
             </div>
           </div>
-        </div>
-
-        <div className="flex justify-end">
-          <Button onClick={handleStartExperiment}>
-            开始实验
-          </Button>
         </div>
       </CardContent>
     </Card>

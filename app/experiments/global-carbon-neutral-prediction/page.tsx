@@ -88,7 +88,7 @@ const timelineData: TimelineData[] = [
 
 // 动态导入地图组件，设置ssr为false，确保它只在客户端渲染
 const CarbonEmissionMap = dynamic(
-  () => import('@/app/experiments/carbon-emission-map/map-component').then(mod => mod.default),
+  () => import('@/app/experiments/global-carbon-neutral-prediction/map-component').then(mod => mod.default),
   { ssr: false }
 )
 

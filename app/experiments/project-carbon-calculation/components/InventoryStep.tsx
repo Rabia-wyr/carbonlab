@@ -60,11 +60,6 @@ export function InventoryStep({
   onNext,
   onPrevious
 }: InventoryStepProps) {
-  const handleNext = () => {
-    onComplete()
-    onNext("calculation")
-  }
-
   return (
     <Card>
       <CardHeader>
@@ -137,15 +132,6 @@ export function InventoryStep({
               <strong>说明：</strong>以上工程量清单为实验教学数据，基于真实项目案例整理。在实际项目中，工程量清单应根据设计图纸和现场勘察结果进行详细计算。
             </p>
           </div>
-        </div>
-
-        <div className="flex justify-between">
-          <Button variant="outline" onClick={() => onPrevious("intro")}>
-            上一步
-          </Button>
-          <Button onClick={handleNext}>
-            下一步：碳核算
-          </Button>
         </div>
       </CardContent>
     </Card>

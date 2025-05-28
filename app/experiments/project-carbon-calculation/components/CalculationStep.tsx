@@ -269,10 +269,7 @@ export function CalculationStep({
         {/* 能源碳排放 */}
         {renderItemList("energy", "能源碳排放", <Zap className="w-5 h-5 mr-3" />)}
 
-        <div className="flex justify-between mt-6">
-          <Button variant="outline" onClick={() => onPrevious("inventory")}>
-            上一步
-          </Button>
+        <div className="flex justify-center mt-6">
           <Button onClick={onCalculate}>
             计算碳排放
           </Button>
@@ -334,11 +331,7 @@ export function CalculationStep({
               <div className="text-lg text-gray-600">总碳排放 (kg CO₂e)</div>
             </div>
             
-            <div className="mt-4 text-center">
-              <Button onClick={() => onNext("report")}>
-                生成实验报告
-              </Button>
-            </div>
+
           </div>
         )}
       </CardContent>
