@@ -37,6 +37,21 @@ type ProvinceData = {
   carbonAbsorption: number // 碳吸收量 (万吨)
 }
 
+// STIRPAT模型参数类型
+type STIRPATParams = {
+  province: string
+  cons: number // 常数项
+  lnP: number // 人口系数
+  lnU: number // 城镇化率系数
+  lnA: number // 人均GDP系数
+  lnA2: number // 人均GDP平方项系数
+  lnT: number // 碳排放强度系数
+  lnE1: number // 能源强度系数
+  lnE2: number // 能源结构系数
+  lnIS: number // 产业结构系数
+  r2: number // R²值
+}
+
 // 中国各省份数据（示例数据）
 const provinceData: ProvinceData[] = [
   {
@@ -125,6 +140,88 @@ const provinceData: ProvinceData[] = [
   }
 ]
 
+// STIRPAT模型参数数据（基于研究表格）
+const stirpatParams: STIRPATParams[] = [
+  {
+    province: "北京",
+    cons: -17.675,
+    lnP: 0.285,
+    lnU: 5.458,
+    lnA: 0.025,
+    lnA2: -0.001,
+    lnT: 0.379,
+    lnE1: 0.183,
+    lnE2: -0.021,
+    lnIS: -0.250,
+    r2: 0.806
+  },
+  {
+    province: "上海",
+    cons: -1.684,
+    lnP: 0.342,
+    lnU: 1.877,
+    lnA: 0.140,
+    lnA2: 0.027,
+    lnT: 0.061,
+    lnE1: 0.002,
+    lnE2: -0.055,
+    lnIS: -0.016,
+    r2: 0.942
+  },
+  {
+    province: "广东",
+    cons: -1.449,
+    lnP: 1.017,
+    lnU: 0.719,
+    lnA: 0.120,
+    lnA2: 0.025,
+    lnT: -0.001,
+    lnE1: -0.024,
+    lnE2: 0.403,
+    lnIS: 0.145,
+    r2: 0.971
+  },
+  {
+    province: "江苏",
+    cons: -35.044,
+    lnP: 4.862,
+    lnU: 0.543,
+    lnA: 0.134,
+    lnA2: 0.016,
+    lnT: 0.187,
+    lnE1: 0.004,
+    lnE2: 0.639,
+    lnIS: -0.154,
+    r2: 0.907
+  },
+  {
+    province: "山东",
+    cons: 1.437,
+    lnP: 1.000,
+    lnU: 0.102,
+    lnA: 0.112,
+    lnA2: 0.023,
+    lnT: -0.040,
+    lnE1: -0.013,
+    lnE2: -0.031,
+    lnIS: 0.086,
+    r2: 0.861
+  },
+  {
+    province: "河南",
+    cons: 61.576,
+    lnP: -5.730,
+    lnU: 0.501,
+    lnA: 0.224,
+    lnA2: 0.056,
+    lnT: 0.099,
+    lnE1: -0.103,
+    lnE2: -0.185,
+    lnIS: 0.914,
+    r2: 0.930
+  }
+]
+
 // 碳吸收系数
 const carbonAbsorptionCoefficients = {
   farmland: 0.007, // t·hm²·a⁻¹
@@ -145,6 +242,8 @@ export default function CarbonNeutralPredictionPage() {
   const [predictionYears, setPredictionYears] = useState(30)
   const [carbonIntensityReduction, setCarbonIntensityReduction] = useState(3.5) // 年递减率 %
   const [policyAdvice, setPolicyAdvice] = useState("")
+  const [editableParams, setEditableParams] = useState<STIRPATParams[]>(stirpatParams)
+  const [showParamsTable, setShowParamsTable] = useState(false)
   
   // 计算碳吸收量
   const calculateCarbonAbsorption = (province: ProvinceData) => {
@@ -162,32 +261,58 @@ export default function CarbonNeutralPredictionPage() {
     const baseYear = 2023
     const yearDiff = year - baseYear
     
-    // 简化的STIRPAT模型参数
-    const a = 0.5 // 模型系数
-    const b = 0.8 // 人口弹性系数
-    const c = 0.6 // 城镇化率弹性系数
-    const d = 0.9 // 人均GDP弹性系数
-    const f = -0.1 // 人均GDP平方项系数
-    const g = -0.05 * yearDiff * (carbonIntensityReduction / 100) // 碳排放强度递减
-    const h = -0.03 * yearDiff // 能源强度改善
-    const j = -0.02 * yearDiff // 能源结构优化
-    const k = -0.01 * yearDiff // 产业结构调整
+    // 获取该省份的STIRPAT参数
+    const params = editableParams.find(p => p.province === province.name)
+    if (!params) {
+      // 如果没有找到参数，使用简化模型
+      const a = 0.5
+      const b = 0.8
+      const c = 0.6
+      const d = 0.9
+      const f = -0.1
+      const g = -0.05 * yearDiff * (carbonIntensityReduction / 100)
+      const h = -0.03 * yearDiff
+      const j = -0.02 * yearDiff
+      const k = -0.01 * yearDiff
+      
+      const perCapitaGDP = province.gdp * 10000 / province.population
+      const carbonIntensity = province.carbonEmission / (province.gdp / 10000)
+      const energyIntensity = province.energyConsumption / (province.gdp / 10000)
+      const energyStructure = (province.coalConsumption / province.energyConsumption) * 100
+      const industryStructure = (province.secondaryIndustryValue / province.gdp) * 100
+      
+      const lnI = Math.log(a) + 
+                  b * Math.log(province.population) +
+                  c * Math.log(province.urbanizationRate) +
+                  d * Math.log(perCapitaGDP) +
+                  f * Math.pow(Math.log(perCapitaGDP), 2) +
+                  g * Math.log(carbonIntensity) +
+                  h * Math.log(energyIntensity) +
+                  j * Math.log(energyStructure) +
+                  k * Math.log(industryStructure)
+      
+      return Math.exp(lnI)
+    }
     
+    // 使用STIRPAT参数进行预测
     const perCapitaGDP = province.gdp * 10000 / province.population // 元/人
     const carbonIntensity = province.carbonEmission / (province.gdp / 10000) // t/万元
     const energyIntensity = province.energyConsumption / (province.gdp / 10000) // tce/万元
     const energyStructure = (province.coalConsumption / province.energyConsumption) * 100 // %
     const industryStructure = (province.secondaryIndustryValue / province.gdp) * 100 // %
     
-    const lnI = Math.log(a) + 
-                b * Math.log(province.population) +
-                c * Math.log(province.urbanizationRate) +
-                d * Math.log(perCapitaGDP) +
-                f * Math.pow(Math.log(perCapitaGDP), 2) +
-                g * Math.log(carbonIntensity) +
-                h * Math.log(energyIntensity) +
-                j * Math.log(energyStructure) +
-                k * Math.log(industryStructure)
+    // 应用时间衰减因子
+    const timeDecayFactor = Math.pow(1 - carbonIntensityReduction / 100, yearDiff)
+    
+    const lnI = params.cons + 
+                params.lnP * Math.log(province.population) +
+                params.lnU * Math.log(province.urbanizationRate) +
+                params.lnA * Math.log(perCapitaGDP) +
+                params.lnA2 * Math.pow(Math.log(perCapitaGDP), 2) +
+                params.lnT * Math.log(carbonIntensity * timeDecayFactor) +
+                params.lnE1 * Math.log(energyIntensity * timeDecayFactor) +
+                params.lnE2 * Math.log(energyStructure) +
+                params.lnIS * Math.log(industryStructure)
     
     return Math.exp(lnI)
   }
@@ -231,7 +356,7 @@ export default function CarbonNeutralPredictionPage() {
 
   const steps = [
     { id: 1, title: "实验介绍", icon: Play },
-    { id: 2, title: "数据可视化", icon: BarChart3 },
+    { id: 2, title: "数据探索", icon: BarChart3 },
     { id: 3, title: "碳排放预测", icon: TrendingUp },
     { id: 4, title: "碳吸收预测", icon: Leaf },
     { id: 5, title: "碳中和预测", icon: TrendingUp },
@@ -260,6 +385,52 @@ export default function CarbonNeutralPredictionPage() {
     const url = URL.createObjectURL(blob)
     link.setAttribute("href", url)
     link.setAttribute("download", "carbon_data.csv")
+    link.style.visibility = "hidden"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  // 更新STIRPAT参数
+  const updateSTIRPATParam = (province: string, field: keyof STIRPATParams, value: number) => {
+    setEditableParams(prev => 
+      prev.map(param => 
+        param.province === province 
+          ? { ...param, [field]: value }
+          : param
+      )
+    )
+  }
+
+  // 重置参数到默认值
+  const resetParams = () => {
+    setEditableParams(stirpatParams)
+  }
+
+  // 下载STIRPAT参数
+  const downloadSTIRPATParams = () => {
+    const csvContent = [
+      ["省份", "Cons", "LnP", "LnU", "LnA", "(LnA)²", "LnT", "LnE1", "LnE2", "LnIS", "R²"],
+      ...editableParams.map(param => [
+        param.province,
+        param.cons,
+        param.lnP,
+        param.lnU,
+        param.lnA,
+        param.lnA2,
+        param.lnT,
+        param.lnE1,
+        param.lnE2,
+        param.lnIS,
+        param.r2
+      ])
+    ].map(row => row.join(",")).join("\n")
+    
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+    const link = document.createElement("a")
+    const url = URL.createObjectURL(blob)
+    link.setAttribute("href", url)
+    link.setAttribute("download", "stirpat_parameters.csv")
     link.style.visibility = "hidden"
     document.body.appendChild(link)
     link.click()
@@ -410,11 +581,11 @@ ${policyAdvice || "请在实验中填写政策建议"}
         </Card>
       )}
 
-      {/* 步骤2: 数据可视化 */}
+      {/* 步骤2: 数据探索 */}
       {currentStep === 2 && (
         <Card>
           <CardHeader>
-            <CardTitle>数据可视化及下载</CardTitle>
+            <CardTitle>数据探索及下载</CardTitle>
             <CardDescription>基于中国地图的各省碳排放量和相关指标可视化</CardDescription>
           </CardHeader>
           <CardContent>
@@ -550,6 +721,161 @@ ${policyAdvice || "请在实验中填写政策建议"}
                     className="mt-2"
                   />
                 </div>
+              </div>
+
+              {/* STIRPAT模型参数录入表格 */}
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold">STIRPAT模型参数设置</h3>
+                  <div className="flex gap-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => setShowParamsTable(!showParamsTable)}
+                    >
+                      {showParamsTable ? "隐藏参数表" : "显示参数表"}
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={resetParams}>
+                      重置参数
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={downloadSTIRPATParams}>
+                      <Download className="h-4 w-4 mr-1" />
+                      下载参数
+                    </Button>
+                  </div>
+                </div>
+
+                {showParamsTable && (
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm border-collapse border border-gray-300">
+                        <thead>
+                          <tr className="bg-gray-100">
+                            <th className="border border-gray-300 px-2 py-2 text-left">省份</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">Cons</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">LnP</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">LnU</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">LnA</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">(LnA)²</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">LnT</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">LnE1</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">LnE2</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">LnIS</th>
+                            <th className="border border-gray-300 px-2 py-2 text-center">R²</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {editableParams.map((param) => (
+                            <tr key={param.province} className="hover:bg-gray-50">
+                              <td className="border border-gray-300 px-2 py-2 font-medium">
+                                {param.province}
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.cons}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'cons', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.lnP}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'lnP', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.lnU}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'lnU', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.lnA}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'lnA', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.lnA2}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'lnA2', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.lnT}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'lnT', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.lnE1}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'lnE1', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.lnE2}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'lnE2', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-1 py-1">
+                                <Input
+                                  type="number"
+                                  step="0.001"
+                                  value={param.lnIS}
+                                  onChange={(e) => updateSTIRPATParam(param.province, 'lnIS', parseFloat(e.target.value) || 0)}
+                                  className="w-20 h-8 text-xs"
+                                />
+                              </td>
+                              <td className="border border-gray-300 px-2 py-2 text-center text-xs">
+                                {param.r2.toFixed(3)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="mt-3 text-xs text-gray-600">
+                      <p><strong>参数说明：</strong></p>
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mt-2">
+                        <div>Cons: 常数项</div>
+                        <div>LnP: 人口系数</div>
+                        <div>LnU: 城镇化率系数</div>
+                        <div>LnA: 人均GDP系数</div>
+                        <div>(LnA)²: 人均GDP平方项</div>
+                        <div>LnT: 碳排放强度系数</div>
+                        <div>LnE1: 能源强度系数</div>
+                        <div>LnE2: 能源结构系数</div>
+                        <div>LnIS: 产业结构系数</div>
+                        <div>R²: 拟合优度</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* 预测结果图表 */}
@@ -877,7 +1203,7 @@ ${policyAdvice || "请在实验中填写政策建议"}
                 ← 上一步
               </Button>
               <Button onClick={() => setCurrentStep(1)}>
-                重新开始实验
+                提交实验报告
               </Button>
             </div>
           </CardContent>

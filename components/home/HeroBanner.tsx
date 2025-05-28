@@ -21,8 +21,11 @@ export function HeroBanner() {
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
         <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-          碳经济与管理AI实训平台：领航新一代绿色未来
+          碳经济与管理AI实训平台
         </h1>
+        <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+          领航新一代绿色未来
+        </h2>
         <p className="text-xl md:text-2xl">
           全链条低碳实训，让你成为“双碳”时代的专业人才
         </p>
