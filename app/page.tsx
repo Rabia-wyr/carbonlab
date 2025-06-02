@@ -48,10 +48,10 @@ export default function Home() {
     async function fetchCourses() {
       setLoading(true);
       const coursesData = await getCourses();
-      // 只显示已上线的课程，并且限制为3个
+      // 只显示已上线的课程，并且限制为4个
       const availableCourses = coursesData
         .filter(course => course.status !== "draft" && course.status !== "archived")        
-        .slice(0, 3);
+        .slice(0, 4);
       setCourses(availableCourses);
       setLoading(false);
     }
@@ -80,8 +80,8 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {courses.map((course) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {courses.slice(0, 4).map((course) => (
                 <CourseCard key={course.id} course={course} />
               ))}
             </div>
@@ -97,19 +97,14 @@ export default function Home() {
         </section>
 
         <section id="about" className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">关于项目</h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">关于平台</h2>
           <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
             <div className="md:flex items-start">
               <div className="md:flex-1 mr-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">项目目标</h3>
-                <p className="text-gray-600 mb-4">
-                  本项目旨在通过交互式可视化模拟，帮助用户更直观地理解碳经济概念和原理。每个模块都经过精心设计，既符合实际应用场景，又能激发用户的学习兴趣。
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">平台简介</h3>
+                <p className="text-gray-600 mb-4 text-lg leading-relaxed indent-8 text-justify">
+                  为积极践行国家双碳战略，助力高校、行业机构、企业决策者提升"双碳"知识、能力和战略高度，设计涵盖应用场景、知识模块以及系统资源的碳经济与管理AI实训平台，加强学生对碳排放、碳交易、碳足迹等关键知识的理解和应用能力，推动教学内容的改革和教学创新。
                 </p>
-                <p className="text-gray-600 mb-4">
-                  通过调整参数、观察现象变化，用户可以主动探索碳经济规律，培养环保意识和实践能力。
-                </p>
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 mt-6">作者简介</h3>
-                <p className="text-gray-600">碳经济研究团队，专注于碳经济可视化教学与模拟</p>
               </div>
               <div className="md:flex-1 mt-6 md:mt-0">
                 <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
