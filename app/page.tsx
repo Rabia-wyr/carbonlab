@@ -4,11 +4,86 @@ import { useEffect, useState } from "react"
 import ModulesGrid from "@/components/home/ModulesGrid"
 import Footer from "@/components/home/Footer"
 import HomeHeader from "@/components/home/HomeHeader"
-import ExperimentList from "@/components/module/ExperimentList"
 import { CourseCard } from "@/components/course/CourseCard"
 import { experiments } from "@/lib/database"
 import { getCourses } from "@/lib/courses"
 import { HeroBanner } from "@/components/home/HeroBanner"
+import Link from "next/link"
+import { BookOpen } from "lucide-react"
+
+// 获取模块背景样式
+const getModuleBgClass = (module: string) => {
+  switch (module) {
+    case "carbon-monitor":
+      return "bg-emerald-50";
+    case "carbon-calculate":
+      return "bg-blue-50";
+    case "carbon-trading":
+      return "bg-purple-50";
+    case "carbon-neutral":
+      return "bg-orange-50";
+    default:
+      return "bg-gray-50";
+  }
+};
+
+// 获取模块图标样式
+const getModuleIconClass = (module: string) => {
+  switch (module) {
+    case "carbon-monitor":
+      return "text-emerald-600";
+    case "carbon-calculate":
+      return "text-blue-600";
+    case "carbon-trading":
+      return "text-purple-600";
+    case "carbon-neutral":
+      return "text-orange-600";
+    default:
+      return "text-gray-600";
+  }
+};
+
+// 获取状态颜色
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "开发中":
+      return "bg-yellow-100 text-yellow-800";
+    case "维护中":
+      return "bg-blue-100 text-blue-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+// 获取难度颜色
+const getDifficultyColor = (difficulty: string) => {
+  switch (difficulty) {
+    case "基础":
+      return "bg-green-100 text-green-800";
+    case "中级":
+      return "bg-blue-100 text-blue-800";
+    case "高级":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+// 获取模块按钮样式
+const getModuleButtonClass = (module: string) => {
+  switch (module) {
+    case "carbon-monitor":
+      return "bg-gradient-to-r from-green-600 to-emerald-700";
+    case "carbon-calculate":
+      return "bg-gradient-to-r from-blue-600 to-indigo-700";
+    case "carbon-trading":
+      return "bg-gradient-to-r from-purple-600 to-violet-700";
+    case "carbon-neutral":
+      return "bg-gradient-to-r from-orange-600 to-amber-700";
+    default:
+      return "bg-gradient-to-r from-gray-600 to-gray-700";
+  }
+};
 
 export default function Home() {
   const [courses, setCourses] = useState<any[]>([]);
@@ -92,39 +167,80 @@ export default function Home() {
           <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门实验</h2>
           <p className="mb-8 text-gray-600">探索我们平台上的精选模拟实验，每个实验都提供了交互控制，让您能够调整参数，观察变化。更多实验可在各领域模块页面中找到。</p>
           
-          {/* 使用 ExperimentList 组件展示所有实验，不显示额外的标题 */}
-          <ExperimentList experiments={experiments} title="" onlyAvailable={true} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {experiments.map((experiment) => (
+              <div
+                key={experiment.id}
+                className="card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]"
+              >
+                <div className="h-48 overflow-hidden relative">
+                  {experiment.image ? (
+                    <img 
+                      src={experiment.image.startsWith('/') ? experiment.image : `/${experiment.image}`}
+                      alt={experiment.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className={`h-full ${getModuleBgClass(experiment.module)} flex items-center justify-center`}>
+                      {experiment.icon && <i className={`fas fa-${experiment.icon} text-6xl ${getModuleIconClass(experiment.module)}`}></i>}
+                    </div>
+                  )}
+                </div>
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-xl font-semibold text-gray-800">{experiment.title}</h3>
+                    <div className="flex items-center gap-2">
+                      {experiment.status && (experiment.status === "开发中" || experiment.status === "维护中") && (
+                        <span className={`text-xs font-medium ${getStatusColor(experiment.status)} px-2 py-1 rounded`}>
+                          {experiment.status}
+                        </span>
+                      )}
+                      <span className={`text-xs font-medium ${getDifficultyColor(experiment.difficulty)} px-2 py-1 rounded`}>
+                        {experiment.difficulty}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 mb-4">{experiment.description}</p>
+                  <Link
+                    href={experiment.route || '#'}
+                    className={`inline-block ${getModuleButtonClass(experiment.module)} text-white font-medium px-4 py-2 rounded-lg transition duration-300 transform hover:scale-105`}
+                  >
+                    <BookOpen className="h-4 w-4 inline-block mr-2" />
+                    开始实验
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section id="about" className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">关于平台</h2>
           <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <div className="md:flex items-start">
-              <div className="md:flex-1 mr-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">平台简介</h3>
-                <p className="text-gray-600 mb-4 text-lg leading-relaxed indent-8 text-justify">
-                  为积极践行国家双碳战略，助力高校、行业机构、企业决策者提升"双碳"知识、能力和战略高度，设计涵盖应用场景、知识模块以及系统资源的碳经济与管理AI实训平台，加强学生对碳排放、碳交易、碳足迹等关键知识的理解和应用能力，推动教学内容的改革和教学创新。
-                </p>
+            <div className="md:flex items-stretch gap-8">
+              <div className="md:flex-1">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 h-full">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">平台简介</h3>
+                  <p className="text-gray-600 text-lg leading-relaxed indent-8 text-justify">
+                    为积极践行国家双碳战略，助力高校、行业机构、企业决策者提升"双碳"知识、能力和战略高度，设计涵盖应用场景、知识模块以及系统资源的碳经济与管理AI实训平台，加强学生对碳排放、碳交易、碳足迹等关键知识的理解和应用能力，推动教学内容的改革和教学创新。
+                  </p>
+                </div>
               </div>
               <div className="md:flex-1 mt-6 md:mt-0">
-                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-800">使用建议</h3>
-                  <ul className="space-y-3 text-gray-600">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 h-full">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">平台优势</h3>
+                  <ul className="space-y-2 text-gray-600">
                     <li className="flex items-start">
                       <i className="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                      <span>将模拟演示与实际案例相结合，加深理解</span>
+                      <span>从碳监测、核算、管理到碳市场、金融、规则，打造闭环式碳能力实训体系，培育市场急需的"双碳"精英人才。</span>
                     </li>
                     <li className="flex items-start">
                       <i className="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                      <span>鼓励自主探索，提出问题并寻找解决方案</span>
+                      <span>整合数字教材、真实案例、虚拟实验与AI智能助教，突破传统局限，支持按需组合的个性化教学与学习体验。</span>
                     </li>
                     <li className="flex items-start">
                       <i className="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                      <span>设计实践任务，引导用户发现碳经济规律</span>
-                    </li>
-                    <li className="flex items-start">
-                      <i className="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                      <span>结合实际生活场景，增强学习的实用性</span>
+                      <span>构建绿色交通、零碳园区等高仿真多元化场景，赋能学生跨学科应用能力，无缝对接产业真实挑战。</span>
                     </li>
                   </ul>
                 </div>

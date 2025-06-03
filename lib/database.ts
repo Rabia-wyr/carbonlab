@@ -16,6 +16,7 @@ export type Experiment = {
   route?: string
   svg?: ReactNode
   module: string
+  image?: string
 }
 
 // 课程类型
@@ -28,6 +29,7 @@ export type Course = {
   icon: string
   route: string
   module: string
+  image?: string
 }
 
 // 模块类型
@@ -55,7 +57,8 @@ export const experiments: Experiment[] = [
     status: "已上线",
     icon: "globe",
     route: "/experiments/global-carbon-neutral-prediction",
-    module: "carbon-neutral"
+    module: "carbon-neutral",
+    image: "/碳中和预测.webp"
   },
   {
     id: "carbon-monitoring-analysis",
@@ -65,7 +68,8 @@ export const experiments: Experiment[] = [
     status: "已上线",
     icon: "chart-area",
     route: "/experiments/carbon-monitoring-analysis",
-    module: "carbon-monitor"
+    module: "carbon-monitor",
+    image: "/碳监测与计量分析.webp"
   },
   {
     id: "project-carbon-calculation",
@@ -75,7 +79,8 @@ export const experiments: Experiment[] = [
     status: "已上线",
     icon: "calculator",
     route: "/experiments/project-carbon-calculation",
-    module: "carbon-calculate"
+    module: "carbon-calculate",
+    image: "/项目碳精算实验.webp"
   },
   // 产品碳足迹分析
   {
@@ -86,7 +91,8 @@ export const experiments: Experiment[] = [
     status: "已上线",
     icon: "shoe-prints",
     route: "/experiments/product-carbon-footprint",
-    module: "carbon-calculate"
+    module: "carbon-calculate",
+    image: "/产品碳足迹分析.webp"
   },
   // 碳交易模块实验
   {
@@ -97,7 +103,8 @@ export const experiments: Experiment[] = [
     status: "已上线",
     icon: "chart-line",
     route: "/experiments/carbon-trading-simulation",
-    module: "carbon-trading"
+    module: "carbon-trading",
+    image: "/碳交易模拟.webp"
   },
   {
     id: "carbon-financial-product-design",
@@ -107,7 +114,8 @@ export const experiments: Experiment[] = [
     status: "已上线",
     icon: "coins",
     route: "/experiments/carbon-financial-product-design",
-    module: "carbon-trading"
+    module: "carbon-trading",
+    image: "/碳金融产品设计.webp"
   },
 ]
 
@@ -123,6 +131,7 @@ export const courses: Course[] = [
     icon: "globe",
     route: "/courses/digital-carbon-rules",
     module: "carbon-monitor",
+    image: "数字时代的碳规则与碳关税.webp"
   },
   {
     id: "carbon-market-trading",
@@ -133,6 +142,7 @@ export const courses: Course[] = [
     icon: "chart-line",
     route: "/courses/carbon-market-trading",
     module: "carbon-trading",
+    image: "碳市场交易与碳金融.webp"
   },
   {
     id: "carbon-accounting-management",
@@ -143,6 +153,7 @@ export const courses: Course[] = [
     icon: "calculator",
     route: "/courses/carbon-accounting-management",
     module: "carbon-calculate",
+    image: "碳核算与碳管理.webp"
   },
   {
     id: "digital-carbon-monitoring",
@@ -153,6 +164,7 @@ export const courses: Course[] = [
     icon: "code",
     route: "/courses/digital-carbon-monitoring",
     module: "carbon-monitor",
+    image: "数智化碳监测与系统开发.webp"
   },
   // 碳核算课程
   {

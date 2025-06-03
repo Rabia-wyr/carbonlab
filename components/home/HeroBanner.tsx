@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export function HeroBanner() {
   // 背景图片列表
@@ -13,26 +13,39 @@ export function HeroBanner() {
 
   // 当前显示的图片索引
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  // 是否正在滑动
-  const [isSliding, setIsSliding] = useState(false)
+  // 是否正在切换
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  // 记录上一次自动切换的时间戳
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
 
   // 自动切换背景图片
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isSliding) {
-        setIsSliding(true)
-        // 等待滑动动画完成后切换图片
+    if (timerRef.current) clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
+      if (!isTransitioning) {
+        setIsTransitioning(true)
         setTimeout(() => {
-          setCurrentImageIndex((prevIndex) => 
+          setCurrentImageIndex((prevIndex) =>
             prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1
           )
-          setIsSliding(false)
-        }, 500) // 500ms 后切换图片
+          setIsTransitioning(false)
+        }, 1000)
       }
-    }, 5000) // 每 5 秒切换一次
+    }, 6000)
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current)
+    }
+  }, [isTransitioning])
 
-    return () => clearInterval(interval)
-  }, [isSliding])
+  // 手动切换图片
+  const handleDotClick = (idx: number) => {
+    if (idx === currentImageIndex || isTransitioning) return
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentImageIndex(idx)
+      setIsTransitioning(false)
+    }, 1000)
+  }
 
   const handleScrollToCategories = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
@@ -55,12 +68,15 @@ export function HeroBanner() {
     >
       {/* 当前背景图片 */}
       <div 
-        className={`absolute inset-0 transition-transform duration-500 ${isSliding ? "-translate-x-full" : "translate-x-0"}`}
+        className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${
+          isTransitioning ? '-translate-x-full' : 'translate-x-0'
+        }`}
         style={{
           backgroundImage: `url("${backgroundImages[currentImageIndex]}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
+          zIndex: isTransitioning ? 0 : 1
         }}
       >
         {/* 黑色遮罩层 */}
@@ -69,12 +85,15 @@ export function HeroBanner() {
 
       {/* 下一张背景图片 */}
       <div 
-        className={`absolute inset-0 transition-transform duration-500 ${isSliding ? "translate-x-0" : "translate-x-full"}`}
+        className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${
+          isTransitioning ? 'translate-x-0' : 'translate-x-full'
+        }`}
         style={{
           backgroundImage: `url("${backgroundImages[nextImageIndex]}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
+          zIndex: isTransitioning ? 1 : 0
         }}
       >
         {/* 黑色遮罩层 */}
@@ -106,6 +125,21 @@ export function HeroBanner() {
             <i className="fas fa-book mr-2"></i>浏览资源
           </a>
         </div>
+      </div>
+      {/* 进度条/小圆点，绝对定位到底部 */}
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-8 flex justify-center items-center gap-3 z-20">
+        {backgroundImages.map((_, idx) => (
+          <button
+            key={idx}
+            className={`w-3 h-3 rounded-full border-2 transition-all duration-300 focus:outline-none ${
+              idx === currentImageIndex ? 'bg-white border-white shadow-lg scale-125' : 'bg-white/40 border-white/40'
+            }`}
+            style={{ cursor: isTransitioning ? 'not-allowed' : 'pointer' }}
+            onClick={() => handleDotClick(idx)}
+            aria-label={`切换到第${idx + 1}张图片`}
+            disabled={isTransitioning}
+          />
+        ))}
       </div>
     </div>
   )
