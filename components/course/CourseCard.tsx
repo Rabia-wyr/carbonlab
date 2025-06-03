@@ -26,6 +26,7 @@ type CourseCardProps = {
     status?: string;
     icon?: string;
     module: string;
+    image?: string;
   };
   className?: string;
 };
@@ -110,9 +111,17 @@ export function CourseCard({ course, className }: CourseCardProps) {
   return (
     <Card className={cn("h-full overflow-hidden transition-all hover:shadow-lg hover:translate-y-[-5px]", className)}>
       <div className={`aspect-video relative overflow-hidden ${moduleStyles.bg} flex items-center justify-center`}>
-        <div className="flex flex-col items-center justify-center h-full w-full">
-          {getIcon()}
-        </div>
+        {course.image ? (
+          <img 
+            src={course.image.startsWith('/') ? course.image : `/${course.image}`} 
+            alt={course.title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full w-full">
+            {getIcon()}
+          </div>
+        )}
       </div>
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-2">

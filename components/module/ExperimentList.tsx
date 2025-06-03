@@ -68,8 +68,14 @@ export default function ExperimentList({
               key={experiment.id}
               className="card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]"
             >
-              <div className={`h-48 overflow-hidden ${getModuleBgClass(experiment.module)} flex items-center justify-center`}>
-                {experiment.svg || 
+              <div className={`h-48 overflow-hidden ${getModuleBgClass(experiment.module)}`}>
+                {experiment.image ? (
+                  <img 
+                    src={experiment.image} 
+                    alt={experiment.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : experiment.svg || 
                   (experiment.icon && <i className={`fas fa-${experiment.icon} text-6xl ${getModuleIconClass(experiment.module)}`}></i>)
                 }
               </div>

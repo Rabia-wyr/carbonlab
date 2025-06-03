@@ -200,8 +200,18 @@ export default function ResourcesPage() {
                 key={experiment.id}
                 className="card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]"
               >
-                <div className={`h-48 overflow-hidden ${getModuleBgClass(experiment.module)} flex items-center justify-center`}>
-                  {experiment.icon && <i className={`fas fa-${experiment.icon} text-6xl ${getModuleIconClass(experiment.module)}`}></i>}
+                <div className="h-48 overflow-hidden relative">
+                  {experiment.image ? (
+                    <img 
+                      src={experiment.image.startsWith('/') ? experiment.image : `/${experiment.image}`}
+                      alt={experiment.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className={`h-full ${getModuleBgClass(experiment.module)} flex items-center justify-center`}>
+                      {experiment.icon && <i className={`fas fa-${experiment.icon} text-6xl ${getModuleIconClass(experiment.module)}`}></i>}
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-2">
