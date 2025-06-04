@@ -9,7 +9,7 @@ import { experiments } from "@/lib/database"
 import { getCourses } from "@/lib/courses"
 import { HeroBanner } from "@/components/home/HeroBanner"
 import Link from "next/link"
-import { BookOpen } from "lucide-react"
+import { BookOpen, FileText, BarChart3, Globe, ArrowRight } from "lucide-react"
 
 // 获取模块背景样式
 const getModuleBgClass = (module: string) => {
@@ -141,6 +141,55 @@ export default function Home() {
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <HeroBanner />
+
+        <section id="consulting" className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">碳经济咨询</h2>
+          <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-800">碳经济信息中心</h3>
+              <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+                汇聚最新的碳经济政策法规、权威研究文章和公开数据资源，为您提供全面、及时、准确的碳经济信息服务，助力双碳目标实现。
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-blue-600" />
+                </div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-2">政策法规</h4>
+                <p className="text-gray-600 text-sm">国家和地方层面的碳经济相关政策法规文件，及时跟踪政策动态</p>
+              </div>
+              
+              <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border border-green-100">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Globe className="h-8 w-8 text-green-600" />
+                </div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-2">公开文章</h4>
+                <p className="text-gray-600 text-sm">权威机构发布的碳经济研究文章和报告，深度解读行业趋势</p>
+              </div>
+              
+              <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg border border-purple-100">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <BarChart3 className="h-8 w-8 text-purple-600" />
+                </div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-2">公开数据</h4>
+                <p className="text-gray-600 text-sm">碳经济相关的公开数据集和统计资料，支持研究和决策分析</p>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <Link 
+                href="/consulting"
+                className="inline-flex items-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-medium px-6 py-3 rounded-lg transition duration-300 transform hover:scale-105 hover:shadow-lg"
+              >
+                <span>探索碳经济咨询</span>
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <ModulesGrid />
 
         <section id="courses" className="mb-12">
@@ -214,6 +263,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* 关于平台 */}   
         <section id="about" className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">关于平台</h2>
           <div className="bg-white rounded-xl shadow-md p-6 md:p-8">

@@ -56,6 +56,18 @@ export default function HomeHeader() {
               简介
             </a>
             <a
+              href="#about"
+              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+            >
+              关于平台
+            </a>
+            <a
+              href="#consulting"
+              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+            >
+              碳经济咨询
+            </a>
+            <a
               href="#categories"
               className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
             >
@@ -72,12 +84,6 @@ export default function HomeHeader() {
               className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
             >
               热门实验
-            </a>
-            <a
-              href="#about"
-              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
-            >
-              关于项目
             </a>
           </div>
           <div className="flex items-center md:hidden">
@@ -101,6 +107,18 @@ export default function HomeHeader() {
             简介
           </a>
           <a
+            href="#about"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+          >
+            关于平台
+          </a>
+          <a
+            href="#consulting"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+          >
+            碳经济咨询
+          </a>
+          <a
             href="#categories"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
           >
@@ -117,12 +135,6 @@ export default function HomeHeader() {
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
           >
             热门实验
-          </a>
-          <a
-            href="#about"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
-          >
-            关于项目
           </a>
         </div>
       </div>
