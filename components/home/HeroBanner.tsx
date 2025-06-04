@@ -64,24 +64,30 @@ export function HeroBanner() {
       id="intro" 
       className="relative h-[600px] overflow-hidden flex items-center justify-center text-white mb-12"
     >
-      {/* 背景图片容器 */}
-      {backgroundImages.map((image, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-          }`}
-          style={{
-            backgroundImage: `url("${image}")`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        >
-          {/* 黑色遮罩层 */}
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-        </div>
-      ))}
+      {/* 滑动容器 */}
+      <div 
+        className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
+        style={{
+          transform: `translateX(-${currentImageIndex * 100}%)`,
+        }}
+      >
+        {/* 背景图片 */}
+        {backgroundImages.map((image, index) => (
+          <div
+            key={index}
+            className="relative flex-shrink-0 w-full h-full"
+            style={{
+              backgroundImage: `url("${image}")`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          >
+            {/* 黑色遮罩层 */}
+            <div className="absolute inset-0 bg-black opacity-50"></div>
+          </div>
+        ))}
+      </div>
 
       <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
         <h1 className="text-4xl md:text-6xl font-bold leading-tight">
