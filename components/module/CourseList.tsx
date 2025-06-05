@@ -65,8 +65,18 @@ export default function CourseList({
               key={course.id}
               className="card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]"
             >
-              <div className={`h-48 overflow-hidden ${getModuleBgClass(course.module)} flex items-center justify-center`}>
-                {course.icon && <i className={`fas fa-${course.icon} text-6xl ${getModuleIconClass(course.module)}`}></i>}
+              <div className="h-48 overflow-hidden relative">
+                {course.image ? (
+                  <img 
+                    src={course.image.startsWith('/') ? course.image : `/${course.image}`}
+                    alt={course.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className={`h-full ${getModuleBgClass(course.module)} flex items-center justify-center`}>
+                    {course.icon && <i className={`fas fa-${course.icon} text-6xl ${getModuleIconClass(course.module)}`}></i>}
+                  </div>
+                )}
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-2">

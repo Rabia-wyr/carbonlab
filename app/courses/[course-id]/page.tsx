@@ -23,36 +23,6 @@ export default function CourseDetail({ params }: { params: { "course-id": string
   const [course, setCourse] = useState<Course>(null);
   const [loading, setLoading] = useState(true);
   const courseId = params["course-id"];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isSliding, setIsSliding] = useState(false);
-
-  // 背景图片数组
-  const backgroundImages = [
-    "/banner1.webp",
-    "/banner2.webp",
-    "/banner3.webp",
-    "/banner4.webp"
-  ];
-
-  // 计算下一张图片的索引
-  const nextImageIndex = (currentImageIndex + 1) % backgroundImages.length;
-
-  // 处理图片切换完成后的逻辑
-  const handleTransitionEnd = () => {
-    // 切换完成后更新当前索引
-    setCurrentImageIndex(nextImageIndex);
-    // 重置滑动状态
-    setIsSliding(false);
-  };
-
-  useEffect(() => {
-    // 设置定时器，每5秒切换一次图片
-    const timer = setInterval(() => {
-      setIsSliding(true);
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [currentImageIndex]);
 
   useEffect(() => {
     async function fetchInitialData() {
@@ -130,35 +100,17 @@ export default function CourseDetail({ params }: { params: { "course-id": string
         <div className="flex flex-col md:flex-row gap-8 mb-8">
           <div className="md:w-1/3">
             <div className="relative h-[300px] overflow-hidden rounded-lg shadow-lg">
-              {/* 当前背景图片 */}
-              <div 
-                className={`absolute inset-0 transition-transform duration-500 ${isSliding ? "-translate-x-full" : "translate-x-0"}`}
-                style={{
-                  backgroundImage: `url("${backgroundImages[currentImageIndex]}")`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat'
-                }}
-                onTransitionEnd={handleTransitionEnd}
-              >
-                {/* 黑色遮罩层 */}
-                <div className="absolute inset-0 bg-black opacity-30"></div>
-              </div>
-
-              {/* 下一张背景图片 */}
-              <div 
-                className={`absolute inset-0 transition-transform duration-500 ${isSliding ? "translate-x-0" : "translate-x-full"}`}
-                style={{
-                  backgroundImage: `url("${backgroundImages[nextImageIndex]}")`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat'
-                }}
-                onTransitionEnd={handleTransitionEnd}
-              >
-                {/* 黑色遮罩层 */}
-                <div className="absolute inset-0 bg-black opacity-30"></div>
-              </div>
+              {course.image ? (
+                <img 
+                  src={course.image.startsWith('/') ? course.image : `/${course.image}`}
+                  alt={course.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className={`h-full ${getModuleStyles(course.module).bg} flex items-center justify-center`}>
+                  {course.icon && <i className={`fas fa-${course.icon} text-6xl ${getModuleStyles(course.module).icon}`}></i>}
+                </div>
+              )}
             </div>
           </div>
           <div className="md:w-2/3">

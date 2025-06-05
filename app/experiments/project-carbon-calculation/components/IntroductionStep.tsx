@@ -52,12 +52,12 @@ export function IntroductionStep({ onComplete, onNext }: IntroductionStepProps) 
           <h3 className="text-xl font-semibold">实验流程</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 border rounded-lg">
-              <h4 className="font-medium mb-2">第一步：工程内容清单</h4>
+              <h4 className="font-medium mb-2">第一步：工程清单内容</h4>
               <p className="text-sm text-gray-600">建立详细的工程量清单，包括土方、混凝土、钢材等</p>
             </div>
             <div className="p-4 border rounded-lg">
               <h4 className="font-medium mb-2">第二步：碳核算</h4>
-              <p className="text-sm text-gray-600">分别计算人工、机械、材料、能源四个方面的碳排放</p>
+              <p className="text-sm text-gray-600">分别计算材料生产阶段、材料运输阶段、施工建设阶段、竣工交付阶段四个方面的碳排放</p>
             </div>
           </div>
         </div>
