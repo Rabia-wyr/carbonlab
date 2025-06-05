@@ -4,6 +4,10 @@ import { Progress } from "@/components/ui/progress"
 import { BarChart3, Download } from "lucide-react"
 import { CalculationResults, ExperimentStep } from "./types"
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, CartesianGrid, XAxis, YAxis, Bar, LineChart, Line } from "recharts"
+import { useRef } from "react"
+import jsPDF from "jspdf"
+import html2canvas from "html2canvas"
+import { toast } from "sonner"
 
 interface ReportStepProps {
   projectName: string
@@ -22,6 +26,58 @@ export function ReportStep({
   onPrevious,
   onDownloadReport
 }: ReportStepProps) {
+  const reportRef = useRef<HTMLDivElement>(null)
+
+  const handleDownloadPDF = async () => {
+    if (!reportRef.current) return
+
+    try {
+      toast.loading("正在生成报告...")
+      
+      // 创建 PDF 文档
+      const pdf = new jsPDF("p", "mm", "a4")
+      const pageWidth = pdf.internal.pageSize.getWidth()
+      const pageHeight = pdf.internal.pageSize.getHeight()
+      
+      // 获取报告内容
+      const canvas = await html2canvas(reportRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        windowWidth: reportRef.current.scrollWidth,
+        windowHeight: reportRef.current.scrollHeight
+      })
+      
+      // 将 canvas 转换为图片
+      const imgData = canvas.toDataURL("image/png")
+      
+      // 计算图片尺寸
+      const imgWidth = pageWidth
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
+      
+      // 计算需要的页数
+      const pageCount = Math.ceil(imgHeight / pageHeight)
+      
+      // 添加图片到 PDF，分页处理
+      for (let i = 0; i < pageCount; i++) {
+        if (i > 0) {
+          pdf.addPage()
+        }
+        
+        const position = -i * pageHeight
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight)
+      }
+      
+      // 下载 PDF
+      pdf.save(`碳核算实验报告_${projectName || "未命名项目"}.pdf`)
+      
+      toast.success("报告下载成功")
+    } catch (error) {
+      console.error("生成 PDF 失败:", error)
+      toast.error("生成报告失败，请重试")
+    }
+  }
+
   // 准备饼图数据
   const scopeData = [
     {
@@ -77,14 +133,14 @@ export function ReportStep({
           查看完整的碳核算分析报告和减排建议
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6" ref={reportRef}>
         {/* 项目概况 */}
         <div>
           <h3 className="text-lg font-semibold mb-3">项目概况</h3>
           <div className="p-4 bg-gray-50 rounded-lg">
-            <p><strong>项目名称：</strong>{projectName || "未填写"}</p>
-            <p><strong>项目描述：</strong>{projectDescription || "未填写"}</p>
-            <p><strong>核算日期：</strong>{new Date().toLocaleDateString()}</p>
+            <p><strong>项目名称</strong>：{projectName || "未填写"}</p>
+            <p><strong>项目描述</strong>：{projectDescription || "未填写"}</p>
+            <p><strong>核算日期</strong>：{new Date().toLocaleDateString()}</p>
           </div>
         </div>
 
@@ -209,7 +265,7 @@ export function ReportStep({
 
               {/* 分栏展示图 */}
               <div className="bg-white p-4 rounded-lg shadow">
-                <h4 className="text-md font-medium mb-3 text-gray-700">排放量变化率</h4>
+                <h4 className="text-md font-medium mb-3 text-gray-700">排放量分布</h4>
                 <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart
@@ -334,7 +390,7 @@ export function ReportStep({
 
         {/* 操作按钮 */}
         <div className="flex justify-center">
-          <Button variant="outline" onClick={onDownloadReport}>
+          <Button variant="outline" onClick={handleDownloadPDF}>
             <Download className="w-4 h-4 mr-2" />
             下载报告
           </Button>
