@@ -11,7 +11,7 @@ interface StepNavigationProps {
 
 const steps = [
   { id: "intro", title: "实验介绍", icon: Info },
-  { id: "inventory", title: "工程内容清单", icon: FileText },
+  { id: "inventory", title: "工程清单内容", icon: FileText },
   { id: "calculation", title: "碳核算", icon: Calculator },
   { id: "report", title: "实验报告", icon: BarChart3 }
 ]

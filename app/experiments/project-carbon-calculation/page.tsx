@@ -20,7 +20,7 @@ export default function TransportInfrastructureCarbonPage() {
   // 定义步骤配置
   const steps = [
     { title: "实验介绍", description: "了解实验背景和目标" },
-    { title: "工程内容清单", description: "查看项目工程量数据" },
+    { title: "工程清单内容", description: "查看项目工程量数据" },
     { title: "碳核算", description: "计算各类碳排放" },
     { title: "实验报告", description: "查看结果和分析" }
   ]
@@ -36,9 +36,12 @@ export default function TransportInfrastructureCarbonPage() {
   // 碳核算数据
   const [carbonData, setCarbonData] = useState<CarbonCalculationData>({
     labor: [],
-    machinery: [],
+    transport: [],
     materials: [],
-    energy: []
+    energy: [],
+    temporary: [],
+    waste: [],
+    carbonSink: []
   })
 
   const [calculationResults, setCalculationResults] = useState<CalculationResults | null>(null)
@@ -98,7 +101,7 @@ export default function TransportInfrastructureCarbonPage() {
           />
         )}
 
-        {/* 第二步：工程内容清单 */}
+        {/* 第二步：工程清单内容 */}
         {currentStep === "inventory" && (
           <InventoryStep
             onComplete={() => {}}

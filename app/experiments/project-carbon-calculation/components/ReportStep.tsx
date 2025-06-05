@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { BarChart3, Download } from "lucide-react"
 import { CalculationResults, ExperimentStep } from "./types"
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts"
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, CartesianGrid, XAxis, YAxis, Bar, LineChart, Line } from "recharts"
 
 interface ReportStepProps {
   projectName: string
@@ -115,7 +115,7 @@ export function ReportStep({
                       ))}
                     </Pie>
                     <Tooltip 
-                      formatter={(value: number) => [`${value} kg CO₂e`, "排放量"]}
+                      formatter={(value: number) => [`${value} kg CO₂e`, ""]}
                       labelFormatter={(label) => {
                         const item = scopeData.find(d => d.name === label)
                         return `${label} (${item?.description})`
@@ -167,62 +167,88 @@ export function ReportStep({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* 排放量统计 */}
-            <div className="space-y-4">
-              <h4 className="font-medium">各类别排放量</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span>人工</span>
-                  <div className="flex items-center space-x-2">
-                    <Progress 
-                      value={(calculationResults.labor / calculationResults.total) * 100} 
-                      className="w-20" 
-                    />
-                    <span className="text-sm">{calculationResults.labor} kg CO₂e</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>机械使用</span>
-                  <div className="flex items-center space-x-2">
-                    <Progress 
-                      value={(calculationResults.machinery / calculationResults.total) * 100} 
-                      className="w-20" 
-                    />
-                    <span className="text-sm">{calculationResults.machinery} kg CO₂e</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>材料</span>
-                  <div className="flex items-center space-x-2">
-                    <Progress 
-                      value={(calculationResults.materials / calculationResults.total) * 100} 
-                      className="w-20" 
-                    />
-                    <span className="text-sm">{calculationResults.materials} kg CO₂e</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>能源</span>
-                  <div className="flex items-center space-x-2">
-                    <Progress 
-                      value={(calculationResults.energy / calculationResults.total) * 100} 
-                      className="w-20" 
-                    />
-                    <span className="text-sm">{calculationResults.energy} kg CO₂e</span>
-                  </div>
+          {/* 各类别排放量和排放结构分析 */}
+          <div className="mb-8">
+            <h3 className="text-md font-medium mb-4">各类别排放量和排放结构分析</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* 饼图 */}
+              <div className="bg-white p-4 rounded-lg shadow">
+                <h4 className="text-md font-medium mb-3 text-gray-700">排放结构分布</h4>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { name: "材料生产", value: Math.abs(calculationResults.materials), color: "#0ea5e9" },
+                          { name: "材料运输", value: Math.abs(calculationResults.transport), color: "#b45309" },
+                          { name: "施工建设", value: Math.abs(calculationResults.construction), color: "#ea580c" },
+                          { name: "竣工交付", value: Math.abs(calculationResults.completion), color: "#9333ea" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(1)}%`}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {[
+                          { name: "材料生产", value: Math.abs(calculationResults.materials), color: "#0ea5e9" },
+                          { name: "材料运输", value: Math.abs(calculationResults.transport), color: "#b45309" },
+                          { name: "施工建设", value: Math.abs(calculationResults.construction), color: "#ea580c" },
+                          { name: "竣工交付", value: Math.abs(calculationResults.completion), color: "#9333ea" }
+                        ].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => `${value} kg CO₂e`} />
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
-            </div>
 
-            {/* 排放结构分析 */}
-            <div>
-              <h4 className="font-medium mb-3">排放结构分析</h4>
-              <div className="space-y-2 text-sm">
-                <p>• 材料排放占比最高，达到 {((calculationResults.materials / calculationResults.total) * 100).toFixed(1)}%</p>
-                <p>• 机械使用排放占比 {((calculationResults.machinery / calculationResults.total) * 100).toFixed(1)}%</p>
-                <p>• 能源消耗排放占比 {((calculationResults.energy / calculationResults.total) * 100).toFixed(1)}%</p>
-                <p>• 人工相关排放占比 {((calculationResults.labor / calculationResults.total) * 100).toFixed(1)}%</p>
+              {/* 分栏展示图 */}
+              <div className="bg-white p-4 rounded-lg shadow">
+                <h4 className="text-md font-medium mb-3 text-gray-700">排放量变化率</h4>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={[
+                        { name: "材料生产", value: Math.abs(calculationResults.materials), color: "#0ea5e9" },
+                        { name: "材料运输", value: Math.abs(calculationResults.transport), color: "#b45309" },
+                        { name: "施工建设", value: Math.abs(calculationResults.construction), color: "#ea580c" },
+                        { name: "竣工交付", value: Math.abs(calculationResults.completion), color: "#9333ea" }
+                      ]}
+                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip 
+                        formatter={(value) => [`${value} kg CO₂e`, ""]}
+                        labelFormatter={(label) => label}
+                        separator=""
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke="#8884d8"
+                        strokeWidth={2}
+                        dot={{ fill: "#8884d8", strokeWidth: 2 }}
+                        activeDot={{ r: 8, fill: "#8884d8" }}
+                      >
+                        {[
+                          { name: "材料生产", value: Math.abs(calculationResults.materials), color: "#0ea5e9" },
+                          { name: "材料运输", value: Math.abs(calculationResults.transport), color: "#b45309" },
+                          { name: "施工建设", value: Math.abs(calculationResults.construction), color: "#ea580c" },
+                          { name: "竣工交付", value: Math.abs(calculationResults.completion), color: "#9333ea" }
+                        ].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Line>
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
           </div>

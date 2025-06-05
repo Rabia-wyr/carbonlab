@@ -131,7 +131,7 @@ export const courses: Course[] = [
     icon: "globe",
     route: "/courses/digital-carbon-rules",
     module: "carbon-monitor",
-    image: "数字时代的碳规则与碳关税.webp"
+    image: "/数字时代的碳规则与碳关税.webp"
   },
   {
     id: "carbon-market-trading",
@@ -142,7 +142,7 @@ export const courses: Course[] = [
     icon: "chart-line",
     route: "/courses/carbon-market-trading",
     module: "carbon-trading",
-    image: "碳市场交易与碳金融.webp"
+    image: "/碳市场交易与碳金融.webp"
   },
   {
     id: "carbon-accounting-management",
@@ -153,7 +153,7 @@ export const courses: Course[] = [
     icon: "calculator",
     route: "/courses/carbon-accounting-management",
     module: "carbon-calculate",
-    image: "碳核算与碳管理.webp"
+    image: "/碳核算与碳管理.webp"
   },
   {
     id: "digital-carbon-monitoring",
@@ -164,7 +164,7 @@ export const courses: Course[] = [
     icon: "code",
     route: "/courses/digital-carbon-monitoring",
     module: "carbon-monitor",
-    image: "数智化碳监测与系统开发.webp"
+    image: "/数智化碳监测与系统开发.webp"
   },
   // 碳核算课程
   {
@@ -176,6 +176,7 @@ export const courses: Course[] = [
     icon: "calculator",
     route: "/courses/carbon-accounting-standards",
     module: "carbon-calculate",
+    image: "/碳核算标准与方法.webp"
   },
   {
     id: "life-cycle-assessment",
@@ -186,6 +187,7 @@ export const courses: Course[] = [
     icon: "recycle",
     route: "/courses/life-cycle-assessment",
     module: "carbon-calculate",
+    image: "/产品生命周期评价.webp"
   },
   // 碳交易课程
   {
@@ -197,6 +199,7 @@ export const courses: Course[] = [
     icon: "exchange",
     route: "/courses/carbon-trading-fundamentals",
     module: "carbon-trading",
+    image: "/碳交易基础知识.webp"
   },
   {
     id: "carbon-derivatives",
@@ -207,6 +210,7 @@ export const courses: Course[] = [
     icon: "line-chart",
     route: "/courses/carbon-derivatives",
     module: "carbon-trading",
+    image: "/碳金融与衍生品.webp"
   },
   // 碳中和课程
   {
@@ -218,6 +222,7 @@ export const courses: Course[] = [
     icon: "sun",
     route: "/courses/renewable-energy-integration",
     module: "carbon-neutral",
+    image: "/可再生能源系统集成.webp"
   },
   {
     id: "carbon-capture-technologies",
@@ -228,6 +233,7 @@ export const courses: Course[] = [
     icon: "filter",
     route: "/courses/carbon-capture-technologies",
     module: "carbon-neutral",
+    image: "/碳捕集与封存技术.webp"
   },
 ]
 

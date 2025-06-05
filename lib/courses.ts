@@ -57,7 +57,8 @@ export function getCoursesByModule(moduleId: string) {
       status: course.status,
       icon: course.icon,
       module: course.module,
-      route: `/courses/${course.id}` // 添加route属性
+      route: `/courses/${course.id}`, // 添加route属性
+      image: course.image // 添加image属性
     };
   }).filter(Boolean);
 }
