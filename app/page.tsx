@@ -9,7 +9,7 @@ import { experiments } from "@/lib/database"
 import { getCourses } from "@/lib/courses"
 import { HeroBanner } from "@/components/home/HeroBanner"
 import Link from "next/link"
-import { BookOpen, FileText, BarChart3, Globe, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { BookOpen, FileText, BarChart3, Globe, ArrowRight, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
@@ -113,15 +113,15 @@ const policySlides = [
 const articles = [
   {
     id: 1,
-    title: "碳市场交易机制创新研究",
+    title: "世界能源投资报告 2025（IEA）",
     date: "2024-03-15",
-    url: "/articles/carbon-market-innovation"
+    url: "https://www.iea.org/reports/world-energy-investment-2025"
   },
   {
     id: 2,
-    title: "企业碳资产管理实践指南",
+    title: "碳定价的现状和趋势2024（世界银行）",
     date: "2024-03-10",
-    url: "/articles/carbon-asset-management"
+    url: "https://openknowledge.worldbank.org/entities/publication/b0d66765-299c-4fb8-921f-61f6bb979087"
   },
   {
     id: 3,
@@ -141,7 +141,7 @@ const datasets = [
   },
   {
     id: 2,
-    title: "中国碳核算数据库",
+    title: "中国碳核算数据库（CEADs）",
     updateTime: "2024-03-10",
     url: "https://www.ceads.net.cn/"
   },
@@ -315,9 +315,9 @@ export default function Home() {
 
             {/* 右侧：公开文章和公开数据 */}
             <div className="lg:col-span-2 space-y-6">
-              {/* 公开文章 */}
+              {/* 公开报告 */}
               <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">公开文章</h3>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3">公开报告</h3>
                 <Card className="p-3">
                   <div className="space-y-2">
                     {articles.slice(0, 2).map((article) => (
@@ -328,7 +328,6 @@ export default function Home() {
                       >
                         <div className="flex justify-between items-center">
                           <h4 className="text-gray-800 font-medium text-sm">{article.title}</h4>
-                          <span className="text-xs text-gray-500">{article.date}</span>
                         </div>
                       </a>
                     ))}
@@ -338,7 +337,7 @@ export default function Home() {
                       href="/articles"
                       className="flex items-center justify-center text-blue-600 hover:text-blue-800 transition-colors text-sm"
                     >
-                      <span>查看更多文章</span>
+                      <span>查看更多报告</span>
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Link>
                   </div>
@@ -358,7 +357,6 @@ export default function Home() {
                       >
                         <div className="flex justify-between items-center">
                           <h4 className="text-gray-800 font-medium text-sm">{dataset.title}</h4>
-                          <span className="text-xs text-gray-500">更新：{dataset.updateTime}</span>
                         </div>
                       </a>
                     ))}
@@ -469,15 +467,15 @@ export default function Home() {
                   <h3 className="text-xl font-semibold mb-4 text-gray-800">平台优势</h3>
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-start">
-                      <i className="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4" />
                       <span>从碳监测、核算、管理到碳市场、金融、规则，打造闭环式碳能力实训体系，培育市场急需的"双碳"精英人才。</span>
                     </li>
                     <li className="flex items-start">
-                      <i className="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4" />
                       <span>整合数字教材、真实案例、虚拟实验与AI智能助教，突破传统局限，支持按需组合的个性化教学与学习体验。</span>
                     </li>
                     <li className="flex items-start">
-                      <i className="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4" />
                       <span>构建绿色交通、零碳园区等高仿真多元化场景，赋能学生跨学科应用能力，无缝对接产业真实挑战。</span>
                     </li>
                   </ul>
