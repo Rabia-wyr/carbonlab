@@ -199,7 +199,7 @@ export default function ConsultingPage() {
                 返回首页
               </Link>
               <div className="h-6 w-px bg-gray-300"></div>
-              <h1 className="text-2xl font-bold text-gray-900">碳经济资讯</h1>
+              <h1 className="text-2xl font-bold text-gray-900">双碳快讯</h1>
             </div>
           </div>
         </div>

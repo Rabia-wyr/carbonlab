@@ -137,7 +137,7 @@ export default function DatasetsPage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator className="text-gray-400" />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/consulting" className="text-gray-600 hover:text-gray-900">碳经济资讯</BreadcrumbLink>
+            <BreadcrumbLink href="/consulting" className="text-gray-600 hover:text-gray-900">双碳快讯</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator className="text-gray-400" />
           <BreadcrumbItem>

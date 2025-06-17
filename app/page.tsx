@@ -9,6 +9,7 @@ import { experiments } from "@/lib/database"
 import { getCourses } from "@/lib/courses"
 import { HeroBanner } from "@/components/home/HeroBanner"
 import Link from "next/link"
+import Image from "next/image"
 import { BookOpen, FileText, BarChart3, Globe, ArrowRight, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -196,7 +197,7 @@ export default function Home() {
       const coursesData = await getCourses();
       // 只显示已上线的课程，并且限制为4个
       const availableCourses = coursesData
-        .filter(course => course.status !== "draft" && course.status !== "archived")        
+        .filter(course => course.status !== "draft" && course.status !== "archived")
         .slice(0, 4);
       setCourses(availableCourses);
       setLoading(false);
@@ -249,14 +250,88 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-20 py-12">
         <HeroBanner />
 
-        {/* 碳经济资讯 */}
+        <ModulesGrid />
+
+        <section id="courses" className="mb-9">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门课程</h2>
+          <p className="mb-8 text-gray-600">探索我们平台上的精选课程，每个课程都包含了系统化的学习路径和丰富的实践内容，帮助您从零开始掌握碳经济相关知识。</p>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="text-center">
+                <div className="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p className="mt-4 text-muted-foreground">加载课程中...</p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {courses.slice(0, 4).map((course) => (
+                <CourseCard key={course.id} course={course} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section id="experiments" className="mb-9">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门实验</h2>
+          <p className="mb-8 text-gray-600">探索我们平台上的精选模拟实验，每个实验都提供了交互控制，让您能够调整参数，观察变化。更多实验可在各领域模块页面中找到。</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {experiments.map((experiment) => (
+              <div
+                key={experiment.id}
+                className="card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]"
+              >
+                <div className="h-48 overflow-hidden relative">
+                  {experiment.image ? (
+                    <img
+                      src={experiment.image.startsWith('/') ? experiment.image : `/${experiment.image}`}
+                      alt={experiment.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className={`h-full ${getModuleBgClass(experiment.module)} flex items-center justify-center`}>
+                      {experiment.icon && <i className={`fas fa-${experiment.icon} text-6xl ${getModuleIconClass(experiment.module)}`}></i>}
+                    </div>
+                  )}
+                </div>
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-xl font-semibold text-gray-800">{experiment.title}</h3>
+                    <div className="flex items-center gap-2">
+                      {experiment.status && (experiment.status === "开发中" || experiment.status === "维护中") && (
+                        <span className={`text-xs font-medium ${getStatusColor(experiment.status)} px-2 py-1 rounded`}>
+                          {experiment.status}
+                        </span>
+                      )}
+                      <span className={`text-xs font-medium ${getDifficultyColor(experiment.difficulty)} px-2 py-1 rounded`}>
+                        {experiment.difficulty}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 mb-4">{experiment.description}</p>
+                  <Link
+                    href={experiment.route || '#'}
+                    className={`inline-block ${getModuleButtonClass(experiment.module)} text-white font-medium px-4 py-2 rounded-lg transition duration-300 transform hover:scale-105`}
+                  >
+                    <BookOpen className="h-4 w-4 inline-block mr-2" />
+                    开始实验
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+
+        {/* 双碳快讯 */}
         <section id="consulting" className="py-9 bg-gray-50">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">碳经济资讯</h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">双碳快讯</h2>
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* 左侧：政策法规轮播 */}
             <div className="lg:col-span-3 space-y-4">
               <div className="relative">
-                <div 
+                <div
                   className="relative h-[400px] rounded-lg overflow-hidden"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
@@ -264,9 +339,8 @@ export default function Home() {
                   {policySlides.map((slide, index) => (
                     <div
                       key={slide.id}
-                      className={`absolute inset-0 transition-opacity duration-500 ${
-                        index === currentSlide ? "opacity-100" : "opacity-0"
-                      }`}
+                      className={`absolute inset-0 transition-opacity duration-500 ${index === currentSlide ? "opacity-100" : "opacity-0"
+                        }`}
                       onClick={handleSlideClick}
                       style={{ cursor: 'pointer' }}
                     >
@@ -305,9 +379,8 @@ export default function Home() {
                   <button
                     key={index}
                     onClick={() => setCurrentSlide(index)}
-                    className={`h-1 transition-all duration-300 ${
-                      index === currentSlide ? "w-8 bg-gray-800" : "w-4 bg-gray-300"
-                    }`}
+                    className={`h-1 transition-all duration-300 ${index === currentSlide ? "w-8 bg-gray-800" : "w-4 bg-gray-300"
+                      }`}
                   />
                 ))}
               </div>
@@ -376,106 +449,63 @@ export default function Home() {
           </div>
         </section>
 
-        <ModulesGrid />
+        {/* 关于平台 */}
+        <section id="about" className="mb-9">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">平台资源</h2>
 
-        <section id="courses" className="mb-9">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门课程</h2>
-          <p className="mb-8 text-gray-600">探索我们平台上的精选课程，每个课程都包含了系统化的学习路径和丰富的实践内容，帮助您从零开始掌握碳经济相关知识。</p>
-          
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="text-center">
-                <div className="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                <p className="mt-4 text-muted-foreground">加载课程中...</p>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {courses.slice(0, 4).map((course) => (
-                <CourseCard key={course.id} course={course} />
-              ))}
-            </div>
-          )}
-        </section>
-
-        <section id="experiments" className="mb-9">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门实验</h2>
-          <p className="mb-8 text-gray-600">探索我们平台上的精选模拟实验，每个实验都提供了交互控制，让您能够调整参数，观察变化。更多实验可在各领域模块页面中找到。</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {experiments.map((experiment) => (
-              <div
-                key={experiment.id}
-                className="card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]"
-              >
-                <div className="h-48 overflow-hidden relative">
-                  {experiment.image ? (
-                    <img 
-                      src={experiment.image.startsWith('/') ? experiment.image : `/${experiment.image}`}
-                      alt={experiment.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className={`h-full ${getModuleBgClass(experiment.module)} flex items-center justify-center`}>
-                      {experiment.icon && <i className={`fas fa-${experiment.icon} text-6xl ${getModuleIconClass(experiment.module)}`}></i>}
-                    </div>
-                  )}
-                </div>
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-semibold text-gray-800">{experiment.title}</h3>
-                    <div className="flex items-center gap-2">
-                      {experiment.status && (experiment.status === "开发中" || experiment.status === "维护中") && (
-                        <span className={`text-xs font-medium ${getStatusColor(experiment.status)} px-2 py-1 rounded`}>
-                          {experiment.status}
-                        </span>
-                      )}
-                      <span className={`text-xs font-medium ${getDifficultyColor(experiment.difficulty)} px-2 py-1 rounded`}>
-                        {experiment.difficulty}
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 mb-4">{experiment.description}</p>
-                  <Link
-                    href={experiment.route || '#'}
-                    className={`inline-block ${getModuleButtonClass(experiment.module)} text-white font-medium px-4 py-2 rounded-lg transition duration-300 transform hover:scale-105`}
-                  >
-                    <BookOpen className="h-4 w-4 inline-block mr-2" />
-                    开始实验
-                  </Link>
-                </div>
-              </div>
-            ))}
+          {/* Hero 图片展示区域 */}
+          <div className="mb-8 w-full aspect-[1510/780] relative overflow-hidden rounded-xl">
+            <Image
+              src="/hero-1.webp"
+              alt="碳经济与管理AI实训平台"
+              fill
+              className="object-cover"
+            />
           </div>
+
         </section>
 
-        {/* 关于平台 */}   
+
+        {/* 关于平台 */}
         <section id="about" className="mb-9">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">关于平台</h2>
+
           <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <div className="md:flex items-stretch gap-8">
-              <div className="md:flex-1">
-                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 h-full">
+            <div className="md:flex gap-8">
+              {/* 左侧图片展示区域 */}
+              <div className="md:w-2/3">
+                <div className="bg-gray-100 rounded-lg h-full min-h-[400px] relative overflow-hidden">
+                  <Image
+                    src="/hero-2.webp"
+                    alt="平台展示图片"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* 右侧内容区域 */}
+              <div className="md:w-1/3 mt-6 md:mt-0 space-y-6">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
                   <h3 className="text-xl font-semibold mb-4 text-gray-800">平台简介</h3>
-                  <p className="text-gray-600 text-lg leading-relaxed indent-8 text-justify">
+                  <p className="text-gray-600 text-base leading-relaxed indent-8 text-justify">
                     为积极践行国家双碳战略，助力高校、行业机构、企业决策者提升"双碳"知识、能力和战略高度，设计涵盖应用场景、知识模块以及系统资源的碳经济与管理AI实训平台，加强学生对碳排放、碳交易、碳足迹等关键知识的理解和应用能力，推动教学内容的改革和教学创新。
                   </p>
                 </div>
-              </div>
-              <div className="md:flex-1 mt-6 md:mt-0">
-                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 h-full">
+
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
                   <h3 className="text-xl font-semibold mb-4 text-gray-800">平台优势</h3>
-                  <ul className="space-y-2 text-gray-600">
+                  <ul className="space-y-3 text-gray-600">
                     <li className="flex items-start">
-                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4" />
+                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4 flex-shrink-0" />
                       <span>从碳监测、核算、管理到碳市场、金融、规则，打造闭环式碳能力实训体系，培育市场急需的"双碳"精英人才。</span>
                     </li>
                     <li className="flex items-start">
-                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4" />
+                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4 flex-shrink-0" />
                       <span>整合数字教材、真实案例、虚拟实验与AI智能助教，突破传统局限，支持按需组合的个性化教学与学习体验。</span>
                     </li>
                     <li className="flex items-start">
-                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4" />
+                      <CheckCircle className="text-green-500 mt-1 mr-2 h-4 w-4 flex-shrink-0" />
                       <span>构建绿色交通、零碳园区等高仿真多元化场景，赋能学生跨学科应用能力，无缝对接产业真实挑战。</span>
                     </li>
                   </ul>
@@ -485,7 +515,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   )
