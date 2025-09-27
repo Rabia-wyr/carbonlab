@@ -4,20 +4,17 @@ import { useEffect, useState, useRef } from "react"
 import Footer from "@/components/home/Footer"
 import HomeHeader from "@/components/home/HomeHeader"
 import { CourseCard } from "@/components/course/CourseCard"
-import { experiments } from "@/lib/database"
-import { getCourses } from "@/lib/courses"
+import { getCoursesForComponent, Course } from "@/lib/api/courses"
 import { HeroBanner } from "@/components/home/HeroBanner"
 import Link from "next/link"
 import Image from "next/image"
-import { BookOpen, FileText, BarChart3, Globe, ArrowRight, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react"
+import { FileText, BarChart3, ChevronLeft, ChevronRight, BookOpen } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { ChevronUp } from "lucide-react"
-import { ExperimentLink, FeatureLink } from "@/components/ui/feature-link"
-import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { experiments } from "@/lib/database"
+import { ExperimentLink } from "@/components/ui/feature-link"
 
-// 获取模块背景样式
+// 实验相关函数（暂时保留，等待实验功能开发）
 const getModuleBgClass = (module: string) => {
   switch (module) {
     case "carbon-monitor":
@@ -33,7 +30,6 @@ const getModuleBgClass = (module: string) => {
   }
 };
 
-// 获取模块图标样式
 const getModuleIconClass = (module: string) => {
   switch (module) {
     case "carbon-monitor":
@@ -49,7 +45,6 @@ const getModuleIconClass = (module: string) => {
   }
 };
 
-// 获取状态颜色
 const getStatusColor = (status: string) => {
   switch (status) {
     case "开发中":
@@ -61,7 +56,6 @@ const getStatusColor = (status: string) => {
   }
 };
 
-// 获取难度颜色
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty) {
     case "基础":
@@ -75,7 +69,6 @@ const getDifficultyColor = (difficulty: string) => {
   }
 };
 
-// 获取模块按钮样式
 const getModuleButtonClass = (module: string) => {
   switch (module) {
     case "carbon-monitor":
@@ -113,7 +106,7 @@ const policySlides = [
   }
 ]
 
-// 公开报告数据
+// 公开报告数据（暂时保留，等待后续开发）
 const reports = [
   {
     id: 1,
@@ -135,7 +128,7 @@ const reports = [
   }
 ]
 
-// 公开数据
+// 公开数据（暂时保留，等待后续开发）
 const datasets = [
   {
     id: 1,
@@ -283,11 +276,11 @@ function NewsCarousel() {
 
 export default function Home() {
   const router = useRouter();
-  const [courses, setCourses] = useState<any[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
-  const [isHovering, setIsHovering] = useState(false)
+  const [isHovering] = useState(false)
 
   // 从资料库同步的内容数据
   const [latestPolicies, setLatestPolicies] = useState(defaultLatestPolicies);
@@ -333,7 +326,8 @@ export default function Home() {
             tag: '数据洞察',
             date: item.date ? new Date(item.date).toLocaleDateString('zh-CN') : '未知日期',
             source: item.source || '未知来源',
-            url: item.url || '#'
+            url: item.url || '#',
+            fileType: item.fileType || 'unknown'
           })));
         }
         
@@ -387,13 +381,18 @@ export default function Home() {
     // 获取课程数据
     async function fetchCourses() {
       setLoading(true);
-      const coursesData = await getCourses();
-      // 只显示已上线的课程，并且限制为4个
-      const availableCourses = coursesData
-        .filter(course => course.status !== "draft" && course.status !== "archived")
-        .slice(0, 4);
-      setCourses(availableCourses);
-      setLoading(false);
+      try {
+        const coursesData = await getCoursesForComponent();
+        // 只显示已上线的课程
+        const availableCourses = coursesData
+          .filter(course => course.isEnabled);
+        setCourses(availableCourses);
+      } catch (error) {
+        console.error('获取课程数据失败:', error);
+        setCourses([]);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchCourses();
@@ -442,7 +441,6 @@ export default function Home() {
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-20 py-12">
         <HeroBanner />
-
         <section id="courses" className="mb-9">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">热门课程</h2>
           <p className="mb-8 text-gray-600">探索我们平台上的精选课程，每个课程都包含了系统化的学习路径和丰富的实践内容，帮助您从零开始掌握碳经济相关知识。</p>
@@ -456,8 +454,21 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {courses.slice(0, 4).map((course) => (
-                <CourseCard key={course.id} course={course} />
+              {courses.map((course) => (
+                <CourseCard
+                  key={course.id}
+                  course={{
+                    id: course.id,
+                    title: course.title,
+                    description: course.description,
+                    difficulty: "beginner", // 默认难度
+                    status: course.isEnabled ? "已上线" : "开发中",
+                    icon: "book",
+                    module: "carbon-monitor", // 默认模块
+                    image: course.coverUrl || undefined,
+                    coverImageKey: course.coverImageKey || undefined,
+                  }}
+                />
               ))}
             </div>
           )}
@@ -501,10 +512,10 @@ export default function Home() {
                     </div>
                   </div>
                   <p className="text-gray-600 mb-4">{experiment.description}</p>
-                  {/* 所有实验都需要登录才能访问 */}
                   <ExperimentLink
                     href={experiment.route || '#'}
                     experimentName={experiment.title}
+                    moduleId={experiment.module}
                     className={`inline-block ${getModuleButtonClass(experiment.module)} text-white font-medium px-4 py-2 rounded-lg transition duration-300 transform hover:scale-105`}
                   >
                     <BookOpen className="h-4 w-4 inline-block mr-2" />
@@ -668,10 +679,21 @@ export default function Home() {
                     <ul className="space-y-4">
                       {latestData.map((item, idx) => (
                         <li key={idx} className="pb-3 border-b border-gray-100">
-                          <a href={item.url} className="flex justify-between items-start transition-all duration-300 hover:text-green-600 hover:underline">
+                          <a 
+                            href={item.url} 
+                            className="flex justify-between items-start transition-all duration-300 hover:text-green-600 hover:underline"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const { handleFileClick } = require('@/lib/utils/file-navigation');
+                              handleFileClick({
+                                url: item.url,
+                                fileType: (item as any).fileType,
+                                title: item.title
+                              }, e);
+                            }}
+                          >
                             <div>
                               <h5 className="font-medium">{item.title}</h5>
-                              <p className="text-sm text-gray-400 mt-1">{item.desc}</p>
                             </div>
                             <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">{item.tag}</span>
                           </a>
